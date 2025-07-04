@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Optimizado para móviles -->
+  <title>Calculadora Camionero Estilizada</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    body, html {
+      margin: 0; padding: 0; 
+      font-family: 'Roboto', sans-serif;
+      color: #e0e8e8;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Filtro desenfocado */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: inherit;
+      filter: blur(8px) brightness(0.7) saturate(1.1);
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 2rem auto;
+      background: rgba(10, 25, 40, 0.85);
+      padding: 20px 25px 25px 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      margin-bottom: 2rem;
+    }
+
+    /* Optimización para móviles */
+    @media (max-width: 600px) {
+      .container {
+        margin: 1rem;
+        padding: 15px 20px 20px 20px;
+      }
+      
+      .header h1 {
+        font-size: 1.3rem;
+      }
+      
+      input[type=number] {
+        padding: 10px 12px;
+        font-size: 1rem;
+      }
+      
+      button {
+        padding: 12px;
+        font-size: 1.1rem;
+      }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      color: #a6d6a6;
+    }
+
+    .header svg {
+      width: 48px;
+      height: 48px;
+      fill: #a6d6a6;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 6px 0;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #cde4cd;
+    }
+
+    input[type=number] {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 1.05rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      box-sizing: border-box;
+      transition: box-shadow 0.3s ease;
+    }
+
+    input[type=number]:focus {
+      box-shadow: 0 0 8px 2px #a6d6a6;
+      background: #e0f3e0;
+      color: #0a1a0a;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 14px;
+      font-size: 1.2rem;
+      background-color: #7ab97a;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      color: #102010;
+      transition: background-color 0.25s ease;
+    }
+
+    button:hover {
+      background-color: #549754;
+      color: #d0f0d0;
+    }
+
+    .resultado {
+      margin-top: 28px;
+      background: rgba(255 255 255 / 0.15);
+      border-radius: 10px;
+      padding: 20px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      box-shadow: 0 0 15px #8fc88faa inset;
+      color: #bceabb;
+      line-height: 1.4;
+      min-height: 100px;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M3 3h18v2H3V3zm0 4h18v10H3V7zm3 3v4h2v-4H6zm7 0v4h2v-4h-2z"/>
+      </svg>
+      <h1>Calculadora Camionero</h1>
+    </div>
+
+    <label for="precioLitro">Precio combustible por litro (€):</label>
+    <input type="number" id="precioLitro" placeholder="Ej: 1.50" />
+
+    <label for="consumo100km">Consumo litros cada 100 km:</label>
+    <input type="number" id="consumo100km" placeholder="Ej: 7.5" />
+
+    <label for="pagoKm">Pago recibido por kilómetro (€):</label>
+    <input type="number" id="pagoKm" placeholder="Ej: 0.90" />
+
+    <label for="distanciaKm">Distancia (km):</label>
+    <input type="number" id="distanciaKm" placeholder="Ej: 500" />
+
+    <button onclick="calcularTodo()">Calcular</button>
+
+    <div class="resultado" id="resultado"></div>
+  </div>
+
+  <script>
+    function calcularTodo() {
+      const precioLitro = parseFloat(document.getElementById('precioLitro').value);
+      const consumo100km = parseFloat(document.getElementById('consumo100km').value);
+      const pagoKm = parseFloat(document.getElementById('pagoKm').value);
+      const distanciaKm = parseFloat(document.getElementById('distanciaKm').value);
+
+      if (
+        isNaN(precioLitro) ||
+        isNaN(consumo100km) ||
+        isNaN(pagoKm) ||
+        isNaN(distanciaKm)
+      ) {
+        document.getElementById('resultado').innerHTML =
+          '<b>Por favor, rellena todos los campos correctamente.</b>';
+        return;
+      }
+
+      const gastoTotal = (consumo100km / 100) * distanciaKm * precioLitro;
+      const ingresoTotal = pagoKm * distanciaKm;
+      const beneficio = ingresoTotal - gastoTotal;
+
+      document.getElementById('resultado').innerHTML = `
+        <b>Resultados para ${distanciaKm} km:</b><br>
+        🔸 Gasto en diésel: <b>€${gastoTotal.toFixed(2)}</b><br>
+        🔸 Ingreso total: <b>€${ingresoTotal.toFixed(2)}</b><br>
+        🔸 Beneficio limpio: <b>€${beneficio.toFixed(2)}</b>
+      `;
+    }
+  </script>
+</body>
+</html>
