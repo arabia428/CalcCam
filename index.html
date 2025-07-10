@@ -2,193 +2,549 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Optimizado para móviles -->
-  <title>Calculadora Camionero Estilizada</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora Camionero</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-    body, html {
-      margin: 0; padding: 0; 
-      font-family: 'Roboto', sans-serif;
-      color: #e0e8e8;
-      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') no-repeat center center fixed;
-      background-size: cover;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* Filtro desenfocado */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: inherit;
-      filter: blur(8px) brightness(0.7) saturate(1.1);
-      z-index: -1;
-    }
-
-    .container {
-      max-width: 480px;
-      margin: 2rem auto;
-      background: rgba(10, 25, 40, 0.85);
-      padding: 20px 25px 25px 25px;
-      border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-      margin-bottom: 2rem;
-    }
-
-    /* Optimización para móviles */
-    @media (max-width: 600px) {
-      .container {
-        margin: 1rem;
-        padding: 15px 20px 20px 20px;
-      }
-      
-      .header h1 {
-        font-size: 1.3rem;
-      }
-      
-      input[type=number] {
-        padding: 10px 12px;
-        font-size: 1rem;
-      }
-      
-      button {
-        padding: 12px;
-        font-size: 1.1rem;
-      }
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      color: #a6d6a6;
-    }
-
-    .header svg {
-      width: 48px;
-      height: 48px;
-      fill: #a6d6a6;
-    }
-
-    label {
-      display: block;
-      margin: 15px 0 6px 0;
-      font-weight: 700;
-      font-size: 1.05rem;
-      color: #cde4cd;
-    }
-
-    input[type=number] {
-      width: 100%;
-      padding: 12px 14px;
-      font-size: 1.05rem;
-      border-radius: 8px;
-      border: none;
-      outline: none;
+    * {
       box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-image: url('https://tse4.mm.bing.net/th/id/OIP.CAYKooOHDROWEh6Y6IPTvgHaE8?pid=Api');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: Arial, sans-serif;
+      color: #fff;
+    }
+
+    label, input, select, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    input, select {
+      padding: 16px;
+      border-radius: 12px;
+      border: 2px solid #ccc;
+      font-size: 16px;
+      background: #fff;
+      color: #000;
+      outline: none;
+      animation: fadeInInput 0.4s ease;
       transition: box-shadow 0.3s ease;
     }
 
-    input[type=number]:focus {
-      box-shadow: 0 0 8px 2px #a6d6a6;
-      background: #e0f3e0;
-      color: #0a1a0a;
+    input:focus, select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
+    }
+
+    @keyframes fadeInInput {
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     button {
-      margin-top: 25px;
-      width: 100%;
-      padding: 14px;
-      font-size: 1.2rem;
-      background-color: #7ab97a;
+      padding: 15px;
+      border-radius: 12px;
       border: none;
-      border-radius: 10px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
       cursor: pointer;
-      font-weight: 700;
-      color: #102010;
-      transition: background-color 0.25s ease;
+      transition: background 0.3s ease;
     }
 
     button:hover {
-      background-color: #549754;
-      color: #d0f0d0;
+      background-color: #0056b3;
+    }
+
+    .pantalla {
+      display: none;
+      background-color: rgba(0, 0, 0, 0.75);
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    .visible {
+      display: block;
     }
 
     .resultado {
-      margin-top: 28px;
-      background: rgba(255 255 255 / 0.15);
-      border-radius: 10px;
-      padding: 20px;
-      font-weight: 700;
-      font-size: 1.15rem;
-      box-shadow: 0 0 15px #8fc88faa inset;
-      color: #bceabb;
-      line-height: 1.4;
-      min-height: 100px;
-      word-wrap: break-word;
+      background: #ffffffa1;
+      color: #000;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 12px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M3 3h18v2H3V3zm0 4h18v10H3V7zm3 3v4h2v-4H6zm7 0v4h2v-4h-2z"/>
-      </svg>
-      <h1>Calculadora Camionero</h1>
-    </div>
-
+  <div id="pantalla1" class="pantalla visible">
+    <h2>Calculadora Camionero</h2>
     <label for="precioLitro">Precio combustible por litro (€):</label>
-    <input type="number" id="precioLitro" placeholder="Ej: 1.50" />
+    <input type="number" id="precioLitro" placeholder="Ej: 1.65" step="0.01" />
 
     <label for="consumo100km">Consumo litros cada 100 km:</label>
-    <input type="number" id="consumo100km" placeholder="Ej: 7.5" />
+    <input type="number" id="consumo100km" placeholder="Ej: 7.5" step="0.1" />
 
     <label for="pagoKm">Pago recibido por kilómetro (€):</label>
-    <input type="number" id="pagoKm" placeholder="Ej: 0.90" />
+    <input type="number" id="pagoKm" placeholder="Ej: 0.90" step="0.01" />
 
     <label for="distanciaKm">Distancia (km):</label>
-    <input type="number" id="distanciaKm" placeholder="Ej: 500" />
+    <input type="number" id="distanciaKm" placeholder="Ej: 500" step="1" />
 
     <button onclick="calcularTodo()">Calcular</button>
-
     <div class="resultado" id="resultado"></div>
+    <button onclick="cambiarPantalla(2)">➕ Añadir gastos fijos</button>
+    <button onclick="cambiarPantalla(3)">📋 Ver historial de cálculos</button>
+  </div>
+
+  <div id="pantalla2" class="pantalla">
+    <h2>Gastos Fijos</h2>
+
+    <label for="seguroCamion">Seguro del camión (€ mensual):</label>
+    <input type="number" id="seguroCamion" step="0.01" />
+
+    <label for="seguroMercancia">Seguro de mercancías (€ mensual):</label>
+    <input type="number" id="seguroMercancia" step="0.01" />
+
+    <label for="itv">ITV (€ por revisión):</label>
+    <input type="number" id="itv" step="0.01" />
+
+    <label for="frecuenciaItv">Frecuencia ITV:</label>
+    <select id="frecuenciaItv">
+      <option value="0">-- Seleccionar --</option>
+      <option value="6">Cada 6 meses</option>
+      <option value="12">Cada año</option>
+      <option value="24">Cada 2 años</option>
+    </select>
+
+    <label for="peajes">Peajes (€ mensuales):</label>
+    <input type="number" id="peajes" step="0.01" />
+
+    <label for="cuotaEmpresarial">Cuota empresarial (€):</label>
+    <input type="number" id="cuotaEmpresarial" step="0.01" />
+
+    <label for="frecuenciaCuota">Frecuencia cuota empresarial:</label>
+    <select id="frecuenciaCuota">
+      <option value="0">-- Seleccionar --</option>
+      <option value="1">Cada día</option>
+      <option value="7">Cada semana</option>
+      <option value="14">Cada 2 semanas</option>
+      <option value="21">Cada 3 semanas</option>
+      <option value="30">Cada mes</option>
+      <option value="90">Cada 3 meses</option>
+      <option value="180">Cada 6 meses</option>
+      <option value="365">Cada año</option>
+    </select>
+
+    <label for="diasTrabajo">Días trabajados al mes:</label>
+    <input type="number" id="diasTrabajo" placeholder="Ej: 22" step="1" min="1" max="31" />
+
+    <label for="viajesPromedio">Viajes promedio al mes:</label>
+    <input type="number" id="viajesPromedio" placeholder="Ej: 8" step="1" min="1" />
+
+    <button onclick="calcularGastosFijos()">Calcular Gastos Fijos</button>
+    <div class="resultado" id="resultadoFijos"></div>
+    <button onclick="calcularTodoConFijos()">💡 Calcular ingresos - gastos</button>
+    <div class="resultado" id="resultadoTotal"></div>
+    <button onclick="cambiarPantalla(1)">⬅️ Volver a principal</button>
+    <button onclick="cambiarPantalla(3)">📋 Ver historial</button>
+  </div>
+
+  <div id="pantalla3" class="pantalla">
+    <h2>📋 Historial de Cálculos</h2>
+    <div class="resultado" id="historialLista"></div>
+    <button onclick="limpiarHistorial()">🗑️ Limpiar historial</button>
+    <button onclick="exportarHistorial()">📤 Exportar historial</button>
+    <button onclick="cambiarPantalla(1)">⬅️ Volver a principal</button>
   </div>
 
   <script>
-    function calcularTodo() {
-      const precioLitro = parseFloat(document.getElementById('precioLitro').value);
-      const consumo100km = parseFloat(document.getElementById('consumo100km').value);
-      const pagoKm = parseFloat(document.getElementById('pagoKm').value);
-      const distanciaKm = parseFloat(document.getElementById('distanciaKm').value);
+    let globalIngreso = 0;
+    let globalGastoCombustible = 0;
+    let datosBasicosCalculados = false;
 
-      if (
-        isNaN(precioLitro) ||
-        isNaN(consumo100km) ||
-        isNaN(pagoKm) ||
-        isNaN(distanciaKm)
-      ) {
-        document.getElementById('resultado').innerHTML =
-          '<b>Por favor, rellena todos los campos correctamente.</b>';
+    // Variable para verificar si localStorage está disponible
+    let localStorageDisponible = false;
+
+    // Verificar localStorage al cargar
+    window.addEventListener('load', function() {
+      verificarLocalStorage();
+      mostrarHistorial();
+    });
+
+    function verificarLocalStorage() {
+      try {
+        const test = 'test';
+        localStorage.setItem(test, test);
+        localStorage.removeItem(test);
+        localStorageDisponible = true;
+      } catch (e) {
+        localStorageDisponible = false;
+        console.log('localStorage no disponible:', e);
+      }
+    }
+
+    function obtenerHistorial() {
+      if (!localStorageDisponible) {
+        return [];
+      }
+      
+      try {
+        const historial = localStorage.getItem('historialCalculos');
+        return historial ? JSON.parse(historial) : [];
+      } catch (e) {
+        console.log('Error al obtener historial:', e);
+        return [];
+      }
+    }
+
+    function guardarHistorial(historial) {
+      if (!localStorageDisponible) {
+        return false;
+      }
+      
+      try {
+        localStorage.setItem('historialCalculos', JSON.stringify(historial));
+        return true;
+      } catch (e) {
+        console.log('Error al guardar historial:', e);
+        return false;
+      }
+    }
+
+    function guardarCalculoBasico(datos) {
+      const calculo = {
+        id: Date.now(),
+        fecha: new Date().toLocaleString('es-ES'),
+        tipo: 'Cálculo Básico',
+        datos: datos,
+        timestamp: Date.now()
+      };
+      
+      let historial = obtenerHistorial();
+      historial.unshift(calculo); // Agregar al principio
+      
+      // Mantener solo los últimos 50 registros
+      if (historial.length > 50) {
+        historial = historial.slice(0, 50);
+      }
+      
+      return guardarHistorial(historial);
+    }
+
+    function guardarCalculoCompleto(datos) {
+      const calculo = {
+        id: Date.now(),
+        fecha: new Date().toLocaleString('es-ES'),
+        tipo: 'Cálculo Completo',
+        datos: datos,
+        timestamp: Date.now()
+      };
+      
+      let historial = obtenerHistorial();
+      historial.unshift(calculo);
+      
+      if (historial.length > 50) {
+        historial = historial.slice(0, 50);
+      }
+      
+      return guardarHistorial(historial);
+    }
+
+    function mostrarHistorial() {
+      const historial = obtenerHistorial();
+      const contenedor = document.getElementById('historialLista');
+      
+      if (!contenedor) {
+        return; // Si no existe el contenedor, no hacer nada
+      }
+      
+      if (!localStorageDisponible) {
+        contenedor.innerHTML = '<p>⚠️ El historial no está disponible. Tu navegador no admite localStorage o está en modo privado.</p>';
+        return;
+      }
+      
+      if (historial.length === 0) {
+        contenedor.innerHTML = '<p>No hay cálculos guardados aún.</p>';
+        return;
+      }
+      
+      let html = '<h3>📊 Registros guardados:</h3>';
+      
+      historial.forEach((calculo, index) => {
+        html += `
+          <div style="border: 1px solid #ddd; margin: 10px 0; padding: 10px; border-radius: 8px; background: #f9f9f9;">
+            <strong>${calculo.tipo} - ${calculo.fecha}</strong><br>
+            ${formatearDatosCalculo(calculo.datos, calculo.tipo)}
+            <button onclick="eliminarCalculo(${calculo.id})" style="margin-top: 5px; padding: 5px 10px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">🗑️ Eliminar</button>
+          </div>
+        `;
+      });
+      
+      contenedor.innerHTML = html;
+    }
+
+    function formatearDatosCalculo(datos, tipo) {
+      if (tipo === 'Cálculo Básico') {
+        return `
+          📏 Distancia: ${datos.distancia} km<br>
+          ⛽ Combustible: €${datos.gastoCombustible}<br>
+          💰 Ingreso: €${datos.ingreso}<br>
+          📈 Ganancia: €${datos.ganancia}
+        `;
+      } else {
+        return `
+          📏 Distancia: ${datos.distancia} km<br>
+          ⛽ Combustible mensual: €${datos.gastoCombustibleMensual}<br>
+          💰 Ingreso mensual: €${datos.ingresoMensual}<br>
+          🏢 Gastos fijos: €${datos.gastosFijos}<br>
+          📈 Ganancia neta: €${datos.gananciaNetaMensual}<br>
+          📅 Ganancia diaria: €${datos.gananciaDiaria}
+        `;
+      }
+    }
+
+    function eliminarCalculo(id) {
+      if (!localStorageDisponible) {
+        alert('No se puede eliminar. localStorage no disponible.');
+        return;
+      }
+      
+      let historial = obtenerHistorial();
+      historial = historial.filter(calculo => calculo.id !== id);
+      guardarHistorial(historial);
+      mostrarHistorial();
+    }
+
+    function limpiarHistorial() {
+      if (!localStorageDisponible) {
+        alert('No se puede limpiar. localStorage no disponible.');
+        return;
+      }
+      
+      if (confirm('¿Estás seguro de que quieres eliminar todo el historial?')) {
+        try {
+          localStorage.removeItem('historialCalculos');
+          mostrarHistorial();
+        } catch (e) {
+          alert('Error al limpiar historial: ' + e.message);
+        }
+      }
+    }
+
+    function exportarHistorial() {
+      const historial = obtenerHistorial();
+      if (historial.length === 0) {
+        alert('No hay datos para exportar');
+        return;
+      }
+      
+      let texto = 'HISTORIAL DE CÁLCULOS - CALCULADORA CAMIONERO\n';
+      texto += '='.repeat(50) + '\n\n';
+      
+      historial.forEach((calculo, index) => {
+        texto += `${index + 1}. ${calculo.tipo} - ${calculo.fecha}\n`;
+        if (calculo.tipo === 'Cálculo Básico') {
+          texto += `   Distancia: ${calculo.datos.distancia} km\n`;
+          texto += `   Gasto combustible: €${calculo.datos.gastoCombustible}\n`;
+          texto += `   Ingreso: €${calculo.datos.ingreso}\n`;
+          texto += `   Ganancia: €${calculo.datos.ganancia}\n`;
+        } else {
+          texto += `   Distancia: ${calculo.datos.distancia} km\n`;
+          texto += `   Gasto combustible mensual: €${calculo.datos.gastoCombustibleMensual}\n`;
+          texto += `   Ingreso mensual: €${calculo.datos.ingresoMensual}\n`;
+          texto += `   Gastos fijos: €${calculo.datos.gastosFijos}\n`;
+          texto += `   Ganancia neta mensual: €${calculo.datos.gananciaNetaMensual}\n`;
+          texto += `   Ganancia diaria: €${calculo.datos.gananciaDiaria}\n`;
+        }
+        texto += '\n';
+      });
+      
+      try {
+        const blob = new Blob([texto], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'historial_calculadora_camionero.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch (e) {
+        alert('Error al exportar: ' + e.message);
+      }
+    }
+
+    function cambiarPantalla(pantalla) {
+      document.getElementById("pantalla1").classList.remove("visible");
+      document.getElementById("pantalla2").classList.remove("visible");
+      document.getElementById("pantalla3").classList.remove("visible");
+      document.getElementById("pantalla" + pantalla).classList.add("visible");
+      
+      // Actualizar historial cuando se cambia a esa pantalla
+      if (pantalla === 3) {
+        mostrarHistorial();
+      }
+    }
+
+    function calcularTodo() {
+      const precioLitro = parseFloat(document.getElementById("precioLitro").value);
+      const consumo = parseFloat(document.getElementById("consumo100km").value);
+      const pagoKm = parseFloat(document.getElementById("pagoKm").value);
+      const distancia = parseFloat(document.getElementById("distanciaKm").value);
+
+      if (isNaN(precioLitro) || isNaN(consumo) || isNaN(pagoKm) || isNaN(distancia)) {
+        document.getElementById("resultado").innerText = "Por favor, completa todos los campos correctamente.";
+        datosBasicosCalculados = false;
         return;
       }
 
-      const gastoTotal = (consumo100km / 100) * distanciaKm * precioLitro;
-      const ingresoTotal = pagoKm * distanciaKm;
-      const beneficio = ingresoTotal - gastoTotal;
+      if (precioLitro <= 0 || consumo <= 0 || pagoKm <= 0 || distancia <= 0) {
+        document.getElementById("resultado").innerText = "Todos los valores deben ser mayores que cero.";
+        datosBasicosCalculados = false;
+        return;
+      }
 
-      document.getElementById('resultado').innerHTML = `
-        <b>Resultados para ${distanciaKm} km:</b><br>
-        🔸 Gasto en diésel: <b>€${gastoTotal.toFixed(2)}</b><br>
-        🔸 Ingreso total: <b>€${ingresoTotal.toFixed(2)}</b><br>
-        🔸 Beneficio limpio: <b>€${beneficio.toFixed(2)}</b>
+      const litrosTotales = (consumo / 100) * distancia;
+      const gastoCombustible = litrosTotales * precioLitro;
+      const ingreso = pagoKm * distancia;
+      const ganancia = ingreso - gastoCombustible;
+
+      globalIngreso = ingreso;
+      globalGastoCombustible = gastoCombustible;
+      datosBasicosCalculados = true;
+
+      // Guardar en el historial
+      const datosCalculo = {
+        precioLitro: precioLitro,
+        consumo: consumo,
+        pagoKm: pagoKm,
+        distancia: distancia,
+        gastoCombustible: gastoCombustible.toFixed(2),
+        ingreso: ingreso.toFixed(2),
+        ganancia: ganancia.toFixed(2)
+      };
+      
+      const guardadoExitoso = guardarCalculoBasico(datosCalculo);
+      const mensajeGuardado = guardadoExitoso ? 
+        '<small style="color: #666;">✅ Cálculo guardado en el historial</small>' :
+        '<small style="color: #666;">⚠️ No se pudo guardar (localStorage no disponible)</small>';
+
+      document.getElementById("resultado").innerHTML = `
+        Gasto en combustible: €${gastoCombustible.toFixed(2)}<br>
+        Ingreso total: €${ingreso.toFixed(2)}<br>
+        Ganancia estimada: €${ganancia.toFixed(2)}<br>
+        ${mensajeGuardado}
+      `;
+    }
+
+    function calcularGastosFijos() {
+      const seguroCamion = parseFloat(document.getElementById("seguroCamion").value) || 0;
+      const seguroMercancia = parseFloat(document.getElementById("seguroMercancia").value) || 0;
+      const itv = parseFloat(document.getElementById("itv").value) || 0;
+      const frecuenciaItv = parseInt(document.getElementById("frecuenciaItv").value);
+      const peajes = parseFloat(document.getElementById("peajes").value) || 0;
+      const cuota = parseFloat(document.getElementById("cuotaEmpresarial").value) || 0;
+      const frecuenciaCuota = parseInt(document.getElementById("frecuenciaCuota").value);
+
+      if (frecuenciaItv === 0 || frecuenciaCuota === 0) {
+        document.getElementById("resultadoFijos").innerText = "Selecciona frecuencias válidas para ITV y cuota.";
+        return;
+      }
+
+      const itvMensual = itv / frecuenciaItv;
+      const cuotaMensual = (cuota * 30) / frecuenciaCuota;
+      const totalMensual = seguroCamion + seguroMercancia + itvMensual + peajes + cuotaMensual;
+      const totalDiario = totalMensual / 30;
+      const totalAnual = totalMensual * 12;
+
+      document.getElementById("resultadoFijos").innerHTML = `
+        Total mensual: €${totalMensual.toFixed(2)}<br>
+        Total diario: €${totalDiario.toFixed(2)}<br>
+        Total anual: €${totalAnual.toFixed(2)}
+      `;
+    }
+
+    function calcularTodoConFijos() {
+      // Validar que se hayan calculado los datos básicos primero
+      if (!datosBasicosCalculados) {
+        document.getElementById("resultadoTotal").innerText = "❌ Primero debes calcular los datos básicos en la pantalla principal.";
+        return;
+      }
+
+      const seguroCamion = parseFloat(document.getElementById("seguroCamion").value) || 0;
+      const seguroMercancia = parseFloat(document.getElementById("seguroMercancia").value) || 0;
+      const itv = parseFloat(document.getElementById("itv").value) || 0;
+      const frecuenciaItv = parseInt(document.getElementById("frecuenciaItv").value);
+      const peajes = parseFloat(document.getElementById("peajes").value) || 0;
+      const cuota = parseFloat(document.getElementById("cuotaEmpresarial").value) || 0;
+      const frecuenciaCuota = parseInt(document.getElementById("frecuenciaCuota").value);
+      const diasTrabajo = parseFloat(document.getElementById("diasTrabajo").value);
+      const viajesPromedio = parseFloat(document.getElementById("viajesPromedio").value);
+
+      if (frecuenciaItv === 0 || frecuenciaCuota === 0) {
+        document.getElementById("resultadoTotal").innerText = "Selecciona frecuencias válidas para ITV y cuota.";
+        return;
+      }
+
+      if (isNaN(diasTrabajo) || isNaN(viajesPromedio) || diasTrabajo <= 0 || viajesPromedio <= 0) {
+        document.getElementById("resultadoTotal").innerText = "Por favor, completa los días trabajados y viajes promedio al mes.";
+        return;
+      }
+
+      // Calcular gastos fijos mensuales
+      const itvMensual = itv / frecuenciaItv;
+      const cuotaMensual = (cuota * 30) / frecuenciaCuota;
+      const gastosFijosMensuales = seguroCamion + seguroMercancia + itvMensual + peajes + cuotaMensual;
+
+      // Calcular ingresos y gastos mensuales basados en los viajes promedio
+      const ingresoMensual = globalIngreso * viajesPromedio;
+      const gastoCombustibleMensual = globalGastoCombustible * viajesPromedio;
+      
+      // Calcular ganancia neta mensual
+      const gananciaNetaMensual = ingresoMensual - gastoCombustibleMensual - gastosFijosMensuales;
+      
+      // Calcular ganancia por día trabajado
+      const gananciaDiaria = gananciaNetaMensual / diasTrabajo;
+
+      // Guardar cálculo completo en historial
+      const datosCompletos = {
+        distancia: parseFloat(document.getElementById("distanciaKm").value),
+        ingresoMensual: ingresoMensual.toFixed(2),
+        gastoCombustibleMensual: gastoCombustibleMensual.toFixed(2),
+        gastosFijos: gastosFijosMensuales.toFixed(2),
+        gananciaNetaMensual: gananciaNetaMensual.toFixed(2),
+        gananciaDiaria: gananciaDiaria.toFixed(2),
+        diasTrabajo: diasTrabajo,
+        viajesPromedio: viajesPromedio
+      };
+      
+      const guardadoExitoso = guardarCalculoCompleto(datosCompletos);
+      const mensajeGuardado = guardadoExitoso ? 
+        '<small style="color: #666;">✅ Cálculo completo guardado en el historial</small>' :
+        '<small style="color: #666;">⚠️ No se pudo guardar (localStorage no disponible)</small>';
+
+      document.getElementById("resultadoTotal").innerHTML = `
+        <h3>📊 Resumen Mensual:</h3>
+        Ingreso mensual: €${ingresoMensual.toFixed(2)}<br>
+        Gasto combustible mensual: €${gastoCombustibleMensual.toFixed(2)}<br>
+        Gastos fijos mensuales: €${gastosFijosMensuales.toFixed(2)}<br>
+        <strong>Ganancia neta mensual: €${gananciaNetaMensual.toFixed(2)}</strong><br>
+        <strong>Ganancia por día trabajado: €${gananciaDiaria.toFixed(2)}</strong><br>
+        ${mensajeGuardado}
       `;
     }
   </script>
