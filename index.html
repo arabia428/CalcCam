@@ -194,6 +194,36 @@ button:hover {
         Ingreso total: €${ingreso.toFixed(2)}<br>
         Ganancia estimada: €${ganancia.toFixed(2)}
       `;
+
+      // Guardar para usar luego
+      window.ultimoIngreso = ingreso;
+      window.ultimoGasto = gastoCombustible;
+    }
+
+    function calcularTodoConFijos() {
+      const seguroCamion = parseFloat(document.getElementById("seguroCamion").value) || 0;
+      const seguroMercancia = parseFloat(document.getElementById("seguroMercancia").value) || 0;
+      const itv = parseFloat(document.getElementById("itv").value) || 0;
+      const frecuenciaItv = parseInt(document.getElementById("frecuenciaItv").value) || 12;
+      const peajes = parseFloat(document.getElementById("peajes").value) || 0;
+      const cuota = parseFloat(document.getElementById("cuotaEmpresarial").value) || 0;
+      const frecuenciaCuota = parseInt(document.getElementById("frecuenciaCuota").value) || 30;
+
+      const itvMensual = itv / frecuenciaItv;
+      const cuotaMensual = (cuota * 30) / frecuenciaCuota;
+      const gastosFijosMensuales = seguroCamion + seguroMercancia + itvMensual + peajes + cuotaMensual;
+
+      const ingresoMensual = window.ultimoIngreso || 0;
+      const gastoMensual = window.ultimoGasto || 0;
+
+      const gananciaNeta = ingresoMensual - gastoMensual - gastosFijosMensuales;
+
+      document.getElementById("resultadoTotal").innerHTML = `
+        <strong>Ingreso mensual: €${ingresoMensual.toFixed(2)}</strong><br>
+        <strong>Gasto combustible mensual: €${gastoMensual.toFixed(2)}</strong><br>
+        <strong>Gastos fijos: €${gastosFijosMensuales.toFixed(2)}</strong><br>
+        <strong>Ganancia neta mensual: €${gananciaNeta.toFixed(2)}</strong>
+      `;
     }
   </script></body>
 </html>
