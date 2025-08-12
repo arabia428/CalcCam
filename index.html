@@ -366,12 +366,6 @@
       const pago = parseFloat(document.getElementById("pagoKm").value) || 0;
       const distancia = parseFloat(document.getElementById("distanciaKm").value) || 0;
 
-      if (precioLitro <= 0 || consumo <= 0 || pago <= 0 || distancia <= 0) {
-        document.getElementById("resultado").innerHTML = 
-          '<span style="color: red;">⚠️ Por favor, completa todos los campos con valores válidos.</span>';
-        return;
-      }
-
       const litrosTotales = (consumo / 100) * distancia;
       const gastoCombustible = litrosTotales * precioLitro;
       const ingreso = modo === "viaje" ? pago : pago * distancia;
