@@ -206,6 +206,123 @@
       color: #ffd700;
     }
 
+    /* Estilos para el calculador de tiempo */
+    .calculador-tiempo {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .btn-tiempo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: normal;
+      padding: 0;
+      margin: 0;
+    }
+
+    .btn-tiempo:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    .panel-tiempo {
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      width: 300px;
+      background: rgba(0, 0, 0, 0.95);
+      border-radius: 15px;
+      padding: 20px;
+      display: none;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .panel-tiempo.visible {
+      display: block;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .panel-tiempo h3 {
+      color: #ffd93d;
+      margin: 0 0 15px 0;
+      text-align: center;
+      font-size: 1.2em;
+    }
+
+    .panel-tiempo input,
+    .panel-tiempo select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid #555;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 14px;
+    }
+
+    .panel-tiempo input::placeholder {
+      color: #ccc;
+    }
+
+    .panel-tiempo label {
+      color: white;
+      font-size: 12px;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .btn-calcular-tiempo {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 10px;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 14px;
+    }
+
+    .resultado-tiempo {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      color: #ffd93d;
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+      border: 1px solid rgba(255, 209, 61, 0.3);
+    }
+
     @media (max-width: 480px) {
       .container {
         padding: 15px;
@@ -217,6 +334,16 @@
       
       .stats-grid {
         grid-template-columns: 1fr;
+      }
+
+      .panel-tiempo {
+        width: 280px;
+        right: -10px;
+      }
+
+      .calculador-tiempo {
+        bottom: 15px;
+        right: 15px;
       }
     }
   </style>
@@ -312,6 +439,36 @@
       <button onclick="limpiarHistorial()" class="btn-danger">🗑️ Limpiar historial</button>
       <button onclick="exportarHistorial()" class="btn-success">📤 Exportar historial</button>
       <button onclick="cambiarPantalla(1)">⬅️ Volver a principal</button>
+    </div>
+  </div>
+
+  <!-- Calculador de Tiempo Flotante -->
+  <div class="calculador-tiempo">
+    <button class="btn-tiempo" onclick="togglePanelTiempo()" title="Calculador de Tiempo">⏱️</button>
+    <div class="panel-tiempo" id="panelTiempo">
+      <h3>⏱️ Calculador de Tiempo</h3>
+      
+      <label>📏 Distancia a recorrer (km):</label>
+      <input type="number" id="distanciaTiempo" placeholder="Ej: 500" step="1" />
+      
+      <label>🏃 Velocidad promedio (km/h):</label>
+      <input type="number" id="velocidadPromedio" min="1" max="200" step="1" placeholder="Ej: 80" />
+      
+      <label>☕ Tiempo de descanso:</label>
+      <select id="tiempoDescanso">
+        <option value="0">Sin descanso</option>
+        <option value="15">15 minutos</option>
+        <option value="30">30 minutos</option>
+        <option value="45">45 minutos</option>
+        <option value="60">1 hora</option>
+        <option value="90">1 hora 30 minutos</option>
+        <option value="120">2 horas</option>
+      </select>
+      
+      <button onclick="calcularTiempoViaje()" class="btn-calcular-tiempo">🚀 Calcular Tiempo</button>
+      <button onclick="resetTiempoViaje()" class="btn-danger" style="width: 100%; padding: 12px; text-transform: none; font-size: 14px; margin-bottom: 10px;">🗑️ Borrar y recalcular</button>
+      
+      <div class="resultado-tiempo" id="resultadoTiempo" style="display: none;"></div>
     </div>
   </div>
 
@@ -594,6 +751,76 @@
       
       alert('✅ Historial exportado correctamente');
     }
+
+    // Funciones del calculador de tiempo
+    function togglePanelTiempo() {
+      const panel = document.getElementById('panelTiempo');
+      panel.classList.toggle('visible');
+    }
+
+    function calcularTiempoViaje() {
+      const distancia = parseFloat(document.getElementById('distanciaTiempo').value) || 0;
+      const velocidad = parseFloat(document.getElementById('velocidadPromedio').value) || 0;
+      const descansoMinutos = parseFloat(document.getElementById('tiempoDescanso').value) || 0;
+      
+      if (distancia <= 0 || velocidad <= 0) {
+        alert('⚠️ Por favor, ingresa una distancia y velocidad válidas');
+        return;
+      }
+
+      // Calcular tiempo de viaje en horas
+      const tiempoViajeHoras = distancia / velocidad;
+      
+      // Convertir a horas, minutos y segundos
+      let tiempoTotalMinutos = (tiempoViajeHoras * 60) + descansoMinutos;
+      
+      const horas = Math.floor(tiempoTotalMinutos / 60);
+      const minutos = Math.floor(tiempoTotalMinutos % 60);
+      const segundos = Math.floor(((tiempoTotalMinutos % 1) * 60));
+
+      // Calcular tiempo sin descanso para comparación
+      const horasSinDescanso = Math.floor(tiempoViajeHoras);
+      const minutosSinDescanso = Math.floor((tiempoViajeHoras % 1) * 60);
+      const segundosSinDescanso = Math.floor(((tiempoViajeHoras % 1) * 60 % 1) * 60);
+
+      const resultado = document.getElementById('resultadoTiempo');
+      resultado.innerHTML = `
+        <div style="margin-bottom: 10px;">
+          <strong>🚛 Tiempo de conducción:</strong><br>
+          ${horasSinDescanso}h ${minutosSinDescanso}m ${segundosSinDescanso}s
+        </div>
+        ${descansoMinutos > 0 ? `
+        <div style="margin-bottom: 10px;">
+          <strong>☕ Tiempo de descanso:</strong><br>
+          ${Math.floor(descansoMinutos/60)}h ${descansoMinutos%60}m
+        </div>` : ''}
+        <div style="border-top: 1px solid rgba(255,209,61,0.3); padding-top: 10px;">
+          <strong>⏱️ Tiempo total:</strong><br>
+          <span style="font-size: 1.2em;">${horas}h ${minutos}m ${segundos}s</span>
+        </div>
+      `;
+      
+      resultado.style.display = 'block';
+    }
+
+    function resetTiempoViaje() {
+      document.getElementById('distanciaTiempo').value = '';
+      document.getElementById('velocidadPromedio').value = '';
+      document.getElementById('tiempoDescanso').value = '0';
+      const resultado = document.getElementById('resultadoTiempo');
+      resultado.innerHTML = '';
+      resultado.style.display = 'none';
+    }
+
+    // Cerrar panel al hacer click fuera
+    document.addEventListener('click', function(event) {
+      const panel = document.getElementById('panelTiempo');
+      const boton = document.querySelector('.btn-tiempo');
+      
+      if (!panel.contains(event.target) && !boton.contains(event.target)) {
+        panel.classList.remove('visible');
+      }
+    });
   </script>
 </body>
 </html>
