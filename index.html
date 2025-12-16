@@ -372,6 +372,12 @@
       <label for="distanciaKm">📏 Distancia (km):</label>
       <input type="number" id="distanciaKm" placeholder="Ej: 500" step="1" />
 
+      <label for="peajesViaje">🛣️ Peajes (€):</label>
+      <input type="number" id="peajesViaje" placeholder="Dejar vacío si no hay peajes" step="0.01" />
+
+      <label for="otrosGastos">📦 Otros gastos (€):</label>
+      <input type="number" id="otrosGastos" placeholder="Dejar vacío si no hay otros gastos" step="0.01" />
+
       <button onclick="calcularTodo()" class="btn-success">📊 Calcular</button>
       <div class="resultado" id="resultado"></div>
       
@@ -477,6 +483,8 @@
     let datosCalculos = {
       ultimoIngreso: 0,
       ultimoGastoCombustible: 0,
+      ultimosPeajes: 0,
+      ultimosOtrosGastos: 0,
       ultimosGastosFijos: 0
     };
 
@@ -522,26 +530,48 @@
       const modo = document.getElementById("modoPago").value;
       const pago = parseFloat(document.getElementById("pagoKm").value) || 0;
       const distancia = parseFloat(document.getElementById("distanciaKm").value) || 0;
+      const peajesViaje = parseFloat(document.getElementById("peajesViaje").value) || 0;
+      const otrosGastos = parseFloat(document.getElementById("otrosGastos").value) || 0;
 
       const litrosTotales = (consumo / 100) * distancia;
       const gastoCombustible = litrosTotales * precioLitro;
       const ingreso = modo === "viaje" ? pago : pago * distancia;
-      const ganancia = ingreso - gastoCombustible;
+      
+      // Calcular ganancia restando peajes y otros gastos
+      const totalGastos = gastoCombustible + peajesViaje + otrosGastos;
+      const ganancia = ingreso - totalGastos;
 
       // Guardar datos para uso posterior
       datosCalculos.ultimoIngreso = ingreso;
       datosCalculos.ultimoGastoCombustible = gastoCombustible;
+      datosCalculos.ultimosPeajes = peajesViaje;
+      datosCalculos.ultimosOtrosGastos = otrosGastos;
 
-      const resultado = document.getElementById("resultado");
-      resultado.innerHTML = `
+      // Construir el resultado con líneas opcionales
+      let resultadoHTML = `
         <strong>📊 Resumen del Viaje</strong><br><br>
         <strong>Distancia:</strong> ${distancia.toLocaleString()} km<br>
         <strong>Combustible necesario:</strong> ${litrosTotales.toFixed(2)} litros<br>
         <strong>Gasto en combustible:</strong> €${gastoCombustible.toFixed(2)}<br>
+      `;
+
+      // Solo mostrar peajes si hay valor
+      if (peajesViaje > 0) {
+        resultadoHTML += `<strong>Peajes:</strong> €${peajesViaje.toFixed(2)}<br>`;
+      }
+
+      // Solo mostrar otros gastos si hay valor
+      if (otrosGastos > 0) {
+        resultadoHTML += `<strong>Otros gastos:</strong> €${otrosGastos.toFixed(2)}<br>`;
+      }
+
+      resultadoHTML += `
         <strong>Ingreso total:</strong> €${ingreso.toFixed(2)}<br>
         <strong>Ganancia bruta:</strong> €${ganancia.toFixed(2)}
       `;
-      
+
+      const resultado = document.getElementById("resultado");
+      resultado.innerHTML = resultadoHTML;
       resultado.className = ganancia >= 0 ? 'resultado positivo' : 'resultado negativo';
 
       // Guardar en historial
@@ -554,6 +584,8 @@
         pago,
         ingreso,
         gastoCombustible,
+        peajesViaje,
+        otrosGastos,
         ganancia,
         tipo: 'viaje'
       });
@@ -599,28 +631,44 @@
       // Estimación mensual basada en el último viaje
       const ingresoPorViaje = datosCalculos.ultimoIngreso;
       const gastoCombustiblePorViaje = datosCalculos.ultimoGastoCombustible;
+      const peajesPorViaje = datosCalculos.ultimosPeajes;
+      const otrosGastosPorViaje = datosCalculos.ultimosOtrosGastos;
       const gastosFijosMensuales = datosCalculos.ultimosGastosFijos;
       
       // Estimamos 8 viajes por mes (2 por semana)
       const viajesPorMes = 8;
       const ingresoMensualEstimado = ingresoPorViaje * viajesPorMes;
       const gastoCombustibleMensual = gastoCombustiblePorViaje * viajesPorMes;
+      const peajesMensual = peajesPorViaje * viajesPorMes;
+      const otrosGastosMensual = otrosGastosPorViaje * viajesPorMes;
       
-      const gananciaNeta = ingresoMensualEstimado - gastoCombustibleMensual - gastosFijosMensuales;
+      const gananciaNeta = ingresoMensualEstimado - gastoCombustibleMensual - peajesMensual - otrosGastosMensual - gastosFijosMensuales;
       const gananciaNetaPorViaje = gananciaNeta / viajesPorMes;
 
-      const resultado = document.getElementById("resultadoTotal");
-      resultado.innerHTML = `
+      let resultadoHTML = `
         <strong>💰 Análisis Mensual Estimado</strong><br>
         <small>(Basado en ${viajesPorMes} viajes similares por mes)</small><br><br>
         <strong>Ingresos estimados:</strong> €${ingresoMensualEstimado.toFixed(2)}<br>
         <strong>Gastos combustible:</strong> €${gastoCombustibleMensual.toFixed(2)}<br>
+      `;
+
+      if (peajesMensual > 0) {
+        resultadoHTML += `<strong>Peajes:</strong> €${peajesMensual.toFixed(2)}<br>`;
+      }
+
+      if (otrosGastosMensual > 0) {
+        resultadoHTML += `<strong>Otros gastos:</strong> €${otrosGastosMensual.toFixed(2)}<br>`;
+      }
+
+      resultadoHTML += `
         <strong>Gastos fijos:</strong> €${gastosFijosMensuales.toFixed(2)}<br>
         <hr>
         <strong>Ganancia neta mensual:</strong> €${gananciaNeta.toFixed(2)}<br>
         <strong>Ganancia neta por viaje:</strong> €${gananciaNetaPorViaje.toFixed(2)}
       `;
-      
+
+      const resultado = document.getElementById("resultadoTotal");
+      resultado.innerHTML = resultadoHTML;
       resultado.className = gananciaNeta >= 0 ? 'resultado positivo' : 'resultado negativo';
 
       // Guardar análisis en historial
@@ -628,6 +676,8 @@
         fecha: new Date().toLocaleString('es-ES'),
         ingresoMensual: ingresoMensualEstimado,
         gastosCombustible: gastoCombustibleMensual,
+        peajesMensual,
+        otrosGastosMensual,
         gastosFijos: gastosFijosMensuales,
         gananciaNeta,
         gananciaNetaPorViaje,
@@ -696,7 +746,7 @@
 
       const totalViajes = viajes.length;
       const totalIngresos = viajes.reduce((sum, viaje) => sum + viaje.ingreso, 0);
-      const totalGastos = viajes.reduce((sum, viaje) => sum + viaje.gastoCombustible, 0);
+      const totalGastos = viajes.reduce((sum, viaje) => sum + viaje.gastoCombustible + (viaje.peajesViaje || 0) + (viaje.otrosGastos || 0), 0);
       const promedioGanancia = viajes.reduce((sum, viaje) => sum + viaje.ganancia, 0) / totalViajes;
 
       document.getElementById('estadisticas').innerHTML = `
@@ -824,3 +874,4 @@
   </script>
 </body>
 </html>
+
