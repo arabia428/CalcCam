@@ -352,66 +352,66 @@
   <div class="container">
     <!-- Pantalla Principal -->
     <div id="pantalla1" class="pantalla visible">
-      <h2>🚛 Calculadora Camionero Pro</h2>
+      <h2> Calculadora Camionero Pro</h2>
       
-      <label for="precioLitro">💰 Precio combustible por litro (€):</label>
+      <label for="precioLitro"> Precio combustible por litro (€):</label>
       <input type="number" id="precioLitro" placeholder="Ej: 1.65" step="0.01" />
       
-      <label for="consumo100km">⛽ Consumo litros cada 100 km:</label>
+      <label for="consumo100km"> Consumo litros cada 100 km:</label>
       <input type="number" id="consumo100km" placeholder="Ej: 7.5" step="0.1" />
 
-      <label for="modoPago">💳 Modo de pago:</label>
+      <label for="modoPago"> Modo de pago:</label>
       <select id="modoPago">
         <option value="km">Pago por kilómetro</option>
         <option value="viaje">Pago por viaje</option>
       </select>
 
-      <label for="pagoKm">💵 Pago recibido (€):</label>
+      <label for="pagoKm"> Pago recibido (€):</label>
       <input type="number" id="pagoKm" placeholder="Ej: 0.90 o 700" step="0.01" />
 
-      <label for="distanciaKm">📏 Distancia (km):</label>
+      <label for="distanciaKm"> Distancia (km):</label>
       <input type="number" id="distanciaKm" placeholder="Ej: 500" step="1" />
 
-      <label for="peajesViaje">🛣️ Peajes (€):</label>
+      <label for="peajesViaje"> Peajes (€):</label>
       <input type="number" id="peajesViaje" placeholder="Dejar vacío si no hay peajes" step="0.01" />
 
-      <label for="otrosGastos">📦 Otros gastos (€):</label>
+      <label for="otrosGastos"> Otros gastos (€):</label>
       <input type="number" id="otrosGastos" placeholder="Dejar vacío si no hay otros gastos" step="0.01" />
 
-      <button onclick="calcularTodo()" class="btn-success">📊 Calcular</button>
+      <button onclick="calcularTodo()" class="btn-success"> Calcular</button>
       <div class="resultado" id="resultado"></div>
       
-      <button onclick="cambiarPantalla(2)" class="btn-secondary">➕ Configurar gastos fijos</button>
-      <button onclick="cambiarPantalla(3)" class="btn-secondary">📋 Ver historial de cálculos</button>
+      <button onclick="cambiarPantalla(2)" class="btn-secondary" style="margin-top: 25px;"> Configurar gastos fijos</button>
+      <button onclick="cambiarPantalla(3)" class="btn-secondary"> Ver historial de cálculos</button>
     </div>
 
     <!-- Pantalla Gastos Fijos -->
     <div id="pantalla2" class="pantalla">
-      <h2>⚙️ Gastos Fijos</h2>
+      <h2> Gastos Fijos</h2>
       
-      <label for="seguroCamion">🛡️ Seguro del camión (€ mensual):</label>
+      <label for="seguroCamion"> Seguro del camión (€ mensual):</label>
       <input type="number" id="seguroCamion" step="0.01" oninput="guardarGastoFijo('seguroCamion')" />
 
-      <label for="seguroMercancia">📦 Seguro de mercancías (€ mensual):</label>
+      <label for="seguroMercancia"> Seguro de mercancías (€ mensual):</label>
       <input type="number" id="seguroMercancia" step="0.01" oninput="guardarGastoFijo('seguroMercancia')" />
 
-      <label for="itv">🔧 ITV (€ por revisión):</label>
+      <label for="itv"> ITV (€ por revisión):</label>
       <input type="number" id="itv" step="0.01" oninput="guardarGastoFijo('itv')" />
 
-      <label for="frecuenciaItv">📅 Frecuencia ITV:</label>
+      <label for="frecuenciaItv"> Frecuencia ITV:</label>
       <select id="frecuenciaItv" onchange="guardarGastoFijo('frecuenciaItv')">
         <option value="12">Cada año</option>
         <option value="6">Cada 6 meses</option>
         <option value="24">Cada 2 años</option>
       </select>
 
-      <label for="peajes">🛣️ Peajes (€ mensuales):</label>
+      <label for="peajes"> Peajes (€ mensuales):</label>
       <input type="number" id="peajes" step="0.01" oninput="guardarGastoFijo('peajes')" />
 
-      <label for="cuotaEmpresarial">🏢 Cuota empresarial (€):</label>
+      <label for="cuotaEmpresarial"> Cuota empresarial (€):</label>
       <input type="number" id="cuotaEmpresarial" step="0.01" oninput="guardarGastoFijo('cuotaEmpresarial')" />
 
-      <label for="frecuenciaCuota">📆 Frecuencia cuota empresarial:</label>
+      <label for="frecuenciaCuota"> Frecuencia cuota empresarial:</label>
       <select id="frecuenciaCuota" onchange="guardarGastoFijo('frecuenciaCuota')">
         <option value="30">Cada mes</option>
         <option value="7">Cada semana</option>
@@ -420,47 +420,47 @@
         <option value="365">Cada año</option>
       </select>
 
-      <button onclick="calcularGastosFijos()" class="btn-success">📊 Calcular Gastos Fijos</button>
+      <button onclick="calcularGastosFijos()" class="btn-success"> Calcular Gastos Fijos</button>
       <div class="resultado" id="resultadoFijos"></div>
       
-      <button onclick="calcularTodoConFijos()" class="btn-success">💡 Calcular ganancia neta</button>
+      <button onclick="calcularTodoConFijos()" class="btn-success"> Calcular ganancia neta</button>
       <div class="resultado" id="resultadoTotal"></div>
       
-      <button onclick="cambiarPantalla(1)">⬅️ Volver a principal</button>
+      <button onclick="cambiarPantalla(1)"> Volver a principal</button>
     </div>
 
     <!-- Pantalla Historial -->
     <div id="pantalla3" class="pantalla">
-      <h2>📋 Historial de Cálculos</h2>
+      <h2> Historial de Cálculos</h2>
       
       <div class="stats-grid" id="estadisticas"></div>
       
       <div class="input-group">
         <input type="text" id="filtroFecha" placeholder="Filtrar por fecha (YYYY-MM-DD)" />
-        <button onclick="filtrarHistorial()" class="btn-secondary">🔍</button>
+        <button onclick="filtrarHistorial()" class="btn-secondary"></button>
       </div>
       
       <div class="resultado" id="historialLista"></div>
       
-      <button onclick="limpiarHistorial()" class="btn-danger">🗑️ Limpiar historial</button>
-      <button onclick="exportarHistorial()" class="btn-success">📤 Exportar historial</button>
-      <button onclick="cambiarPantalla(1)">⬅️ Volver a principal</button>
+      <button onclick="limpiarHistorial()" class="btn-danger"> Limpiar historial</button>
+      <button onclick="exportarHistorial()" class="btn-success"> Exportar historial</button>
+      <button onclick="cambiarPantalla(1)"> Volver a principal</button>
     </div>
   </div>
 
   <!-- Calculador de Tiempo Flotante -->
   <div class="calculador-tiempo">
-    <button class="btn-tiempo" onclick="togglePanelTiempo()" title="Calculador de Tiempo">⏱️</button>
+    <button class="btn-tiempo" onclick="togglePanelTiempo()" title="Calculador de Tiempo"></button>
     <div class="panel-tiempo" id="panelTiempo">
-      <h3>⏱️ Calculador de Tiempo</h3>
+      <h3> Calculador de Tiempo</h3>
       
-      <label>📏 Distancia a recorrer (km):</label>
+      <label> Distancia a recorrer (km):</label>
       <input type="number" id="distanciaTiempo" placeholder="Ej: 500" step="1" />
       
-      <label>🏃 Velocidad promedio (km/h):</label>
+      <label> Velocidad promedio (km/h):</label>
       <input type="number" id="velocidadPromedio" min="1" max="200" step="1" placeholder="Ej: 80" />
       
-      <label>☕ Tiempo de descanso:</label>
+      <label> Tiempo de descanso:</label>
       <select id="tiempoDescanso">
         <option value="0">Sin descanso</option>
         <option value="15">15 minutos</option>
@@ -471,8 +471,8 @@
         <option value="120">2 horas</option>
       </select>
       
-      <button onclick="calcularTiempoViaje()" class="btn-calcular-tiempo">🚀 Calcular Tiempo</button>
-      <button onclick="resetTiempoViaje()" class="btn-danger" style="width: 100%; padding: 12px; text-transform: none; font-size: 14px; margin-bottom: 10px;">🗑️ Borrar y recalcular</button>
+      <button onclick="calcularTiempoViaje()" class="btn-calcular-tiempo"> Calcular Tiempo</button>
+      <button onclick="resetTiempoViaje()" class="btn-danger" style="width: 100%; padding: 12px; text-transform: none; font-size: 14px; margin-bottom: 10px;"> Borrar y recalcular</button>
       
       <div class="resultado-tiempo" id="resultadoTiempo" style="display: none;"></div>
     </div>
@@ -549,26 +549,34 @@
 
       // Construir el resultado con líneas opcionales
       let resultadoHTML = `
-        <strong>📊 Resumen del Viaje</strong><br><br>
-        <strong>Distancia:</strong> ${distancia.toLocaleString()} km<br>
-        <strong>Combustible necesario:</strong> ${litrosTotales.toFixed(2)} litros<br>
-        <strong>Gasto en combustible:</strong> €${gastoCombustible.toFixed(2)}<br>
+        <strong> Resumen del Viaje</strong><br><br>
+         <strong>Distancia:</strong> ${distancia.toLocaleString()} km<br>
+         <strong>Combustible necesario:</strong> ${litrosTotales.toFixed(2)} litros<br>
+         <strong>Gasto en combustible:</strong> €${gastoCombustible.toFixed(2)}<br>
       `;
 
       // Solo mostrar peajes si hay valor
       if (peajesViaje > 0) {
-        resultadoHTML += `<strong>Peajes:</strong> €${peajesViaje.toFixed(2)}<br>`;
+        resultadoHTML += ` <strong>Peajes:</strong> €${peajesViaje.toFixed(2)}<br>`;
       }
 
       // Solo mostrar otros gastos si hay valor
       if (otrosGastos > 0) {
-        resultadoHTML += `<strong>Otros gastos:</strong> €${otrosGastos.toFixed(2)}<br>`;
+        resultadoHTML += ` <strong>Otros gastos:</strong> €${otrosGastos.toFixed(2)}<br>`;
       }
 
       resultadoHTML += `
-        <strong>Ingreso total:</strong> €${ingreso.toFixed(2)}<br>
-        <strong>Ganancia bruta:</strong> €${ganancia.toFixed(2)}
+         <strong>Ingreso total:</strong> €${ingreso.toFixed(2)}<br>
+        <div style="margin-top: 20px; font-weight: bold; font-size: 1.1em; text-shadow: 0 0 8px rgba(40, 167, 69, 0.6), 0 0 15px rgba(40, 167, 69, 0.4);">
+           Ganancia neta: €${ganancia.toFixed(2)}
+        </div>
       `;
+
+      // Mostrar euro/km solo si es pago por viaje y hay distancia
+      if (modo === "viaje" && distancia > 0) {
+        const euroKm = pago / distancia;
+        resultadoHTML += `<div style="margin-top: 10px;"><strong></strong> €${euroKm.toFixed(2)}/km</div>`;
+      }
 
       const resultado = document.getElementById("resultado");
       resultado.innerHTML = resultadoHTML;
@@ -608,7 +616,7 @@
       datosCalculos.ultimosGastosFijos = gastosFijosMensuales;
 
       document.getElementById("resultadoFijos").innerHTML = `
-        <strong>📋 Gastos Fijos Mensuales</strong><br><br>
+        <strong> Gastos Fijos Mensuales</strong><br><br>
         <strong>Seguro camión:</strong> €${seguroCamion.toFixed(2)}<br>
         <strong>Seguro mercancías:</strong> €${seguroMercancia.toFixed(2)}<br>
         <strong>ITV (mensualizado):</strong> €${itvMensual.toFixed(2)}<br>
@@ -622,7 +630,7 @@
     function calcularTodoConFijos() {
       if (datosCalculos.ultimoIngreso === 0) {
         document.getElementById("resultadoTotal").innerHTML = 
-          '<span style="color: red;">⚠️ Primero debes calcular un viaje en la pantalla principal.</span>';
+          '<span style="color: red;"> Primero debes calcular un viaje en la pantalla principal.</span>';
         return;
       }
 
@@ -646,7 +654,7 @@
       const gananciaNetaPorViaje = gananciaNeta / viajesPorMes;
 
       let resultadoHTML = `
-        <strong>💰 Análisis Mensual Estimado</strong><br>
+        <strong> Análisis Mensual Estimado</strong><br>
         <small>(Basado en ${viajesPorMes} viajes similares por mes)</small><br><br>
         <strong>Ingresos estimados:</strong> €${ingresoMensualEstimado.toFixed(2)}<br>
         <strong>Gastos combustible:</strong> €${gastoCombustibleMensual.toFixed(2)}<br>
@@ -709,7 +717,7 @@
       const lista = document.getElementById('historialLista');
       
       if (historial.length === 0) {
-        lista.innerHTML = '<div class="historial-item">📭 No hay cálculos guardados</div>';
+        lista.innerHTML = '<div class="historial-item"> No hay cálculos guardados</div>';
         return;
       }
 
@@ -717,7 +725,7 @@
         if (item.tipo === 'viaje') {
           return `
             <div class="historial-item">
-              <strong>🚛 Viaje #${historial.length - index}</strong><br>
+              <strong> Viaje #${historial.length - index}</strong><br>
               <small>${item.fecha}</small><br>
               Distancia: ${item.distancia} km | Ganancia: €${item.ganancia.toFixed(2)}
             </div>
@@ -725,7 +733,7 @@
         } else if (item.tipo === 'analisis_mensual') {
           return `
             <div class="historial-item">
-              <strong>📊 Análisis Mensual</strong><br>
+              <strong> Análisis Mensual</strong><br>
               <small>${item.fecha}</small><br>
               Ganancia neta mensual: €${item.gananciaNeta.toFixed(2)}
             </div>
@@ -779,7 +787,7 @@
         localStorage.removeItem('historialCalculos');
         mostrarHistorial();
         mostrarEstadisticas();
-        alert('✅ Historial limpiado correctamente');
+        alert(' Historial limpiado correctamente');
       }
     }
 
@@ -787,7 +795,7 @@
       const historial = JSON.parse(localStorage.getItem('historialCalculos') || '[]');
       
       if (historial.length === 0) {
-        alert('⚠️ No hay datos para exportar');
+        alert(' No hay datos para exportar');
         return;
       }
 
@@ -799,7 +807,7 @@
       link.download = `historial_calculadora_${new Date().toISOString().split('T')[0]}.json`;
       link.click();
       
-      alert('✅ Historial exportado correctamente');
+      alert(' Historial exportado correctamente');
     }
 
     // Funciones del calculador de tiempo
@@ -814,7 +822,7 @@
       const descansoMinutos = parseFloat(document.getElementById('tiempoDescanso').value) || 0;
       
       if (distancia <= 0 || velocidad <= 0) {
-        alert('⚠️ Por favor, ingresa una distancia y velocidad válidas');
+        alert(' Por favor, ingresa una distancia y velocidad válidas');
         return;
       }
 
@@ -836,16 +844,16 @@
       const resultado = document.getElementById('resultadoTiempo');
       resultado.innerHTML = `
         <div style="margin-bottom: 10px;">
-          <strong>🚛 Tiempo de conducción:</strong><br>
+          <strong> Tiempo de conducción:</strong><br>
           ${horasSinDescanso}h ${minutosSinDescanso}m ${segundosSinDescanso}s
         </div>
         ${descansoMinutos > 0 ? `
         <div style="margin-bottom: 10px;">
-          <strong>☕ Tiempo de descanso:</strong><br>
+          <strong> Tiempo de descanso:</strong><br>
           ${Math.floor(descansoMinutos/60)}h ${descansoMinutos%60}m
         </div>` : ''}
         <div style="border-top: 1px solid rgba(255,209,61,0.3); padding-top: 10px;">
-          <strong>⏱️ Tiempo total:</strong><br>
+          <strong> Tiempo total:</strong><br>
           <span style="font-size: 1.2em;">${horas}h ${minutos}m ${segundos}s</span>
         </div>
       `;
