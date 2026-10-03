@@ -2,17 +2,17 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#111827" />
   <title>Calculadora Camionero Pro</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-    
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
     html, body {
       margin: 0;
       padding: 0;
       min-height: 100vh;
+      background-color: #111827;
       background-image: url('Exmouth.jpg');
       background-size: cover;
       background-position: center;
@@ -21,330 +21,166 @@
       color: #fff;
     }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px 20px 100px; }
 
-    label {
-      display: block;
-      width: 100%;
-      margin-bottom: 8px;
-      font-weight: 500;
-      font-size: 14px;
-    }
+    label { display: block; width: 100%; margin-bottom: 8px; font-weight: 500; font-size: 14px; }
 
-    input, select, button {
-      display: block;
-      width: 100%;
-      margin-bottom: 15px;
-    }
+    input, select, button { display: block; width: 100%; margin-bottom: 15px; font-family: inherit; }
 
     input, select {
-      padding: 16px;
-      border-radius: 12px;
-      border: 2px solid #ccc;
-      font-size: 16px;
-      background: #fff;
-      color: #000;
-      outline: none;
-      transition: all 0.3s ease;
+      padding: 16px; border-radius: 12px; border: 2px solid #ccc; font-size: 16px;
+      background: #fff; color: #000; outline: none; transition: all 0.3s ease;
     }
-
     input:focus, select:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
-      transform: translateY(-2px);
+      border-color: #007bff; box-shadow: 0 0 10px rgba(0, 123, 255, 0.6); transform: translateY(-2px);
     }
 
     button {
-      padding: 15px;
-      border-radius: 12px;
-      border: none;
-      font-size: 16px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      padding: 15px; border-radius: 12px; border: none; font-size: 16px;
+      background-color: #007bff; color: white; cursor: pointer; transition: all 0.3s ease;
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
     }
+    button:hover { background-color: #0056b3; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3); }
+    button:active { transform: translateY(0); }
 
-    button:hover {
-      background-color: #0056b3;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    .btn-secondary {
-      background-color: #6c757d;
-    }
-
-    .btn-secondary:hover {
-      background-color: #5a6268;
-    }
-
-    .btn-success {
-      background-color: #28a745;
-    }
-
-    .btn-success:hover {
-      background-color: #218838;
-    }
-
-    .btn-danger {
-      background-color: #dc3545;
-    }
-
-    .btn-danger:hover {
-      background-color: #c82333;
-    }
+    .btn-secondary { background-color: #6c757d; }
+    .btn-secondary:hover { background-color: #5a6268; }
+    .btn-success { background-color: #28a745; }
+    .btn-success:hover { background-color: #218838; }
+    .btn-danger { background-color: #dc3545; }
+    .btn-danger:hover { background-color: #c82333; }
 
     .pantalla {
-      display: none;
-      background-color: rgba(0, 0, 0, 0.4);
-      padding: 30px;
-      border-radius: 20px;
-      margin-top: 20px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      display: none; background-color: rgba(0, 0, 0, 0.4); padding: 30px; border-radius: 20px;
+      margin-top: 20px; backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
-
-    .visible {
-      display: block;
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    .visible { display: block; animation: fadeIn 0.5s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     .resultado {
-      background: rgba(255, 255, 255, 0.9);
-      color: #000;
-      padding: 20px;
-      margin-top: 15px;
-      border-radius: 12px;
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.9); color: #000; padding: 20px; margin-top: 15px;
+      border-radius: 12px; font-weight: 500; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-
-    .resultado.positivo {
-      border-left: 5px solid #28a745;
-    }
-
-    .resultado.negativo {
-      border-left: 5px solid #dc3545;
-    }
+    .resultado.positivo { border-left: 5px solid #28a745; }
+    .resultado.negativo { border-left: 5px solid #dc3545; }
 
     .historial-item {
-      background: rgba(255, 255, 255, 0.1);
-      margin-bottom: 10px;
-      padding: 15px;
-      border-radius: 8px;
-      border-left: 4px solid #007bff;
+      background: rgba(255, 255, 255, 0.1); margin-bottom: 10px; padding: 15px;
+      border-radius: 8px; border-left: 4px solid #007bff;
     }
+    .historial-item small { opacity: 0.8; }
+    #historialLista .historial-item { color: #fff; }
 
-    .historial-item small {
-      opacity: 0.8;
+    h2 { text-align: center; margin-bottom: 30px; font-size: 2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+
+    .input-group { display: flex; gap: 10px; align-items: end; }
+    .input-group input { margin-bottom: 0; }
+    .input-group button { margin-bottom: 0; flex-shrink: 0; width: auto; padding: 16px 20px; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+    .stat-card { background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; text-align: center; }
+    .stat-value { font-size: 1.5em; font-weight: bold; color: #ffd700; }
+
+    /* ===== Control de combustible (FuelTrack) ===== */
+    .ft-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
+    .ft-head h2 { margin: 0; font-size: 1.6em; text-align: left; }
+    .ft-vehicle-btn {
+      width: auto; min-width: 150px; margin: 0; padding: 10px 14px; text-align: left;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+      text-transform: none; letter-spacing: 0; font-weight: normal;
     }
+    .ft-vehicle-btn small { display: block; font-size: 10px; opacity: .7; letter-spacing: 1px; }
+    .ft-vehicle-btn strong { font-size: 14px; color: #ffd93d; }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 2em;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    .ft-box { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 18px; margin-bottom: 18px; }
+    .ft-box h3 { margin: 0 0 14px; font-size: 1.1em; color: #ffd93d; }
+    .ft-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+    .ft-full { grid-column: 1 / -1; }
+    .ft-note { font-size: 12px; opacity: .75; line-height: 1.4; margin-top: 4px; }
+
+    .ft-tabs { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 4px; }
+    .ft-tab {
+      width: auto; flex-shrink: 0; margin: 0; padding: 9px 15px; border-radius: 999px;
+      background: rgba(255,255,255,0.14); font-size: 13px; text-transform: none; letter-spacing: 0;
     }
+    .ft-tab.active { background: #007bff; }
 
-    .input-group {
-      display: flex;
-      gap: 10px;
-      align-items: end;
+    .ft-record {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+      background: rgba(255,255,255,0.1); border-left: 4px solid #ffd93d;
+      border-radius: 8px; padding: 13px; margin-bottom: 10px;
     }
-
-    .input-group input {
-      margin-bottom: 0;
+    .ft-record b { font-size: 15px; }
+    .ft-record small { display: block; opacity: .8; margin-top: 3px; }
+    .ft-money { text-align: right; font-weight: bold; color: #ffd93d; white-space: nowrap; }
+    .ft-del {
+      width: auto; margin: 6px 0 0 auto; padding: 4px 10px; font-size: 12px;
+      background: rgba(220,53,69,.85); text-transform: none; letter-spacing: 0;
     }
+    .ft-empty { text-align: center; opacity: .75; padding: 20px 8px; }
 
-    .input-group button {
-      margin-bottom: 0;
-      flex-shrink: 0;
-      width: auto;
-      padding: 16px 20px;
+    .ft-modal { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 2000; display: none; align-items: flex-end; }
+    .ft-modal.show { display: flex; }
+    .ft-sheet {
+      background: rgba(17,24,39,.97); width: 100%; max-width: 620px; margin: auto;
+      border-radius: 24px 24px 0 0; padding: 20px; max-height: 88vh; overflow: auto;
+      padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      border: 1px solid rgba(255,255,255,.12);
     }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-      margin: 20px 0;
+    .ft-sheet-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .ft-sheet-head h3 { margin: 0; color: #ffd93d; }
+    .ft-close { width: 38px; height: 38px; padding: 0; margin: 0; border-radius: 50%; background: rgba(255,255,255,.15); font-size: 20px; }
+    .ft-vrow {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      border: 1px solid rgba(255,255,255,.18); padding: 12px; border-radius: 14px; margin-bottom: 9px;
     }
+    .ft-vrow.sel { border-color: #ffd93d; }
+    .ft-vrow .acts { display: flex; gap: 6px; }
+    .ft-vrow button { width: auto; margin: 0; padding: 8px 12px; font-size: 12px; text-transform: none; letter-spacing: 0; }
 
-    .stat-card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-    }
-
-    .stat-value {
-      font-size: 1.5em;
-      font-weight: bold;
-      color: #ffd700;
-    }
-
-    /* Estilos para el calculador de tiempo */
-    .calculador-tiempo {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1000;
-    }
-
+    /* Calculador de tiempo flotante */
+    .calculador-tiempo { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
     .btn-tiempo {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #ff6b6b, #ffd93d);
-      border: none;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      transition: all 0.3s ease;
-      text-transform: none;
-      letter-spacing: 0;
-      font-weight: normal;
-      padding: 0;
-      margin: 0;
+      width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+      border: none; color: white; font-size: 20px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease; text-transform: none; letter-spacing: 0; font-weight: normal; padding: 0; margin: 0;
     }
-
-    .btn-tiempo:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    }
+    .btn-tiempo:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
 
     .panel-tiempo {
-      position: absolute;
-      bottom: 70px;
-      right: 0;
-      width: 300px;
-      background: rgba(0, 0, 0, 0.95);
-      border-radius: 15px;
-      padding: 20px;
-      display: none;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-      border: 1px solid rgba(255,255,255,0.1);
+      position: absolute; bottom: 70px; right: 0; width: 300px; background: rgba(0, 0, 0, 0.95);
+      border-radius: 15px; padding: 20px; display: none; backdrop-filter: blur(10px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
     }
-
-    .panel-tiempo.visible {
-      display: block;
-      animation: slideUp 0.3s ease;
+    .panel-tiempo.visible { display: block; animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .panel-tiempo h3 { color: #ffd93d; margin: 0 0 15px 0; text-align: center; font-size: 1.2em; }
+    .panel-tiempo input, .panel-tiempo select {
+      width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #555;
+      background: rgba(255,255,255,0.1); color: white; font-size: 14px;
     }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .panel-tiempo h3 {
-      color: #ffd93d;
-      margin: 0 0 15px 0;
-      text-align: center;
-      font-size: 1.2em;
-    }
-
-    .panel-tiempo input,
-    .panel-tiempo select {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      border: 1px solid #555;
-      background: rgba(255,255,255,0.1);
-      color: white;
-      font-size: 14px;
-    }
-
-    .panel-tiempo input::placeholder {
-      color: #ccc;
-    }
-
-    .panel-tiempo label {
-      color: white;
-      font-size: 12px;
-      margin-bottom: 5px;
-      display: block;
-    }
-
+    .panel-tiempo select option { color: #000; }
+    .panel-tiempo input::placeholder { color: #ccc; }
+    .panel-tiempo label { color: white; font-size: 12px; margin-bottom: 5px; display: block; }
     .btn-calcular-tiempo {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, #ff6b6b, #ffd93d);
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      margin-bottom: 10px;
-      text-transform: none;
-      letter-spacing: 0;
-      font-size: 14px;
+      width: 100%; padding: 12px; background: linear-gradient(135deg, #ff6b6b, #ffd93d); border: none;
+      border-radius: 8px; color: white; font-weight: bold; cursor: pointer; margin-bottom: 10px;
+      text-transform: none; letter-spacing: 0; font-size: 14px;
     }
-
     .resultado-tiempo {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 15px;
-      border-radius: 8px;
-      color: #ffd93d;
-      text-align: center;
-      font-weight: bold;
-      margin-top: 10px;
-      border: 1px solid rgba(255, 209, 61, 0.3);
+      background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 8px; color: #ffd93d;
+      text-align: center; font-weight: bold; margin-top: 10px; border: 1px solid rgba(255, 209, 61, 0.3);
     }
 
     @media (max-width: 480px) {
-      .container {
-        padding: 15px;
-      }
-      
-      h2 {
-        font-size: 1.5em;
-      }
-      
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .panel-tiempo {
-        width: 280px;
-        right: -10px;
-      }
-
-      .calculador-tiempo {
-        bottom: 15px;
-        right: 15px;
-      }
+      .container { padding: 15px 15px 100px; }
+      .pantalla { padding: 20px; }
+      h2 { font-size: 1.5em; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .panel-tiempo { width: 280px; right: -10px; }
+      .calculador-tiempo { bottom: 15px; right: 15px; }
+      .ft-head { flex-direction: column; align-items: stretch; }
+      .ft-vehicle-btn { width: 100%; }
     }
   </style>
 </head>
@@ -353,10 +189,10 @@
     <!-- Pantalla Principal -->
     <div id="pantalla1" class="pantalla visible">
       <h2>🚛 Calculadora Camionero Pro</h2>
-      
+
       <label for="precioLitro">💰 Precio combustible por litro (€):</label>
       <input type="number" id="precioLitro" placeholder="Ej: 1.65" step="0.01" />
-      
+
       <label for="consumo100km">⛽ Consumo litros cada 100 km:</label>
       <input type="number" id="consumo100km" placeholder="Ej: 7.5" step="0.1" />
 
@@ -380,15 +216,16 @@
 
       <button onclick="calcularTodo()" class="btn-success">📊 Calcular</button>
       <div class="resultado" id="resultado"></div>
-      
-      <button onclick="cambiarPantalla(2)" class="btn-secondary" style="margin-top: 25px;">➕ Configurar gastos fijos</button>
+
+      <button onclick="cambiarPantalla(4)" style="margin-top: 25px;">⛽ Control de combustible</button>
+      <button onclick="cambiarPantalla(2)" class="btn-secondary">➕ Configurar gastos fijos</button>
       <button onclick="cambiarPantalla(3)" class="btn-secondary">📋 Ver historial de cálculos</button>
     </div>
 
     <!-- Pantalla Gastos Fijos -->
     <div id="pantalla2" class="pantalla">
       <h2>⚙️ Gastos Fijos</h2>
-      
+
       <label for="seguroCamion">🛡️ Seguro del camión (€ mensual):</label>
       <input type="number" id="seguroCamion" step="0.01" oninput="guardarGastoFijo('seguroCamion')" />
 
@@ -422,29 +259,130 @@
 
       <button onclick="calcularGastosFijos()" class="btn-success">📊 Calcular Gastos Fijos</button>
       <div class="resultado" id="resultadoFijos"></div>
-      
+
       <button onclick="calcularTodoConFijos()" class="btn-success">💡 Calcular ganancia neta</button>
       <div class="resultado" id="resultadoTotal"></div>
-      
+
       <button onclick="cambiarPantalla(1)">⬅️ Volver a principal</button>
     </div>
 
     <!-- Pantalla Historial -->
     <div id="pantalla3" class="pantalla">
       <h2>📋 Historial de Cálculos</h2>
-      
+
       <div class="stats-grid" id="estadisticas"></div>
-      
+
       <div class="input-group">
         <input type="text" id="filtroFecha" placeholder="Filtrar por fecha (YYYY-MM-DD)" />
         <button onclick="filtrarHistorial()" class="btn-secondary">🔍</button>
       </div>
-      
+
       <div class="resultado" id="historialLista"></div>
-      
+
       <button onclick="limpiarHistorial()" class="btn-danger">🗑️ Limpiar historial</button>
       <button onclick="exportarHistorial()" class="btn-success">📤 Exportar historial</button>
       <button onclick="cambiarPantalla(1)">⬅️ Volver a principal</button>
+    </div>
+
+    <!-- Pantalla Control de combustible -->
+    <div id="pantalla4" class="pantalla">
+      <div class="ft-head">
+        <h2>⛽ Combustible</h2>
+        <button class="ft-vehicle-btn" onclick="ftOpenModal()">
+          <small>VEHÍCULO</small><strong id="ftSelectedVehicle">Sin vehículo</strong>
+        </button>
+      </div>
+
+      <div class="ft-box">
+        <h3>Nuevo repostaje</h3>
+        <div class="ft-grid">
+          <div>
+            <label for="ftDate">Fecha</label>
+            <input id="ftDate" type="date" />
+          </div>
+          <div>
+            <label for="ftKm">Kilómetros actuales</label>
+            <input id="ftKm" type="number" inputmode="decimal" min="0" step="0.1" placeholder="125430" />
+          </div>
+          <div>
+            <label for="ftLiters">Litros</label>
+            <input id="ftLiters" type="number" inputmode="decimal" min="0" step="0.01" placeholder="52.30" />
+          </div>
+          <div>
+            <label for="ftPrice">Precio €/litro</label>
+            <input id="ftPrice" type="number" inputmode="decimal" min="0" step="0.001" placeholder="1.489" />
+          </div>
+          <div>
+            <label for="ftFuel">Combustible</label>
+            <select id="ftFuel">
+              <option>Diesel</option>
+              <option>Diesel rojo</option>
+              <option>Gasolina 95</option>
+              <option>Gasolina 98</option>
+            </select>
+          </div>
+          <div>
+            <label for="ftTotal">Importe total (€)</label>
+            <input id="ftTotal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Calculado" />
+          </div>
+          <div class="ft-full">
+            <label for="ftNote">Nota (opcional)</label>
+            <input id="ftNote" maxlength="100" placeholder="Ej.: Repostaje completo" />
+          </div>
+        </div>
+        <button class="btn-success" onclick="ftAddRecord()">＋ Guardar repostaje</button>
+        <div class="ft-note">Si introduces litros y precio, el importe se calcula solo. Los datos se guardan en este dispositivo.</div>
+      </div>
+
+      <div class="ft-box">
+        <h3>Resumen del vehículo</h3>
+        <div class="stats-grid" style="margin:0">
+          <div class="stat-card"><div class="stat-value" id="ftSMoney">0,00 €</div><div>Gastado total</div></div>
+          <div class="stat-card"><div class="stat-value" id="ftSLiters">0,00 L</div><div>Litros totales</div></div>
+          <div class="stat-card"><div class="stat-value" id="ftSKm">0 km</div><div>Kilómetros</div></div>
+          <div class="stat-card"><div class="stat-value" id="ftSAvg">-- L/100</div><div>Consumo medio</div></div>
+          <div class="stat-card"><div class="stat-value" id="ftSCostKm">-- €/km</div><div>Coste por km</div></div>
+        </div>
+      </div>
+
+      <div class="ft-box">
+        <h3>Consumo por periodo</h3>
+        <div class="ft-tabs" id="ftPeriodTabs">
+          <button class="ft-tab active" data-period="day">Diario</button>
+          <button class="ft-tab" data-period="week">Semanal</button>
+          <button class="ft-tab" data-period="month">Mensual</button>
+          <button class="ft-tab" data-period="year">Anual</button>
+          <button class="ft-tab" data-period="all">Total</button>
+        </div>
+        <div class="stats-grid" style="margin:0">
+          <div class="stat-card"><div class="stat-value" id="ftPLiters">0,00 L</div><div>Litros</div></div>
+          <div class="stat-card"><div class="stat-value" id="ftPKm">0 km</div><div>Distancia</div></div>
+          <div class="stat-card"><div class="stat-value" id="ftPAvg">-- L/100</div><div>Consumo</div></div>
+          <div class="stat-card"><div class="stat-value" id="ftPMoney">0,00 €</div><div>Gasto</div></div>
+        </div>
+        <div class="ft-note">El consumo se calcula con la distancia entre registros de kilómetros. El primer repostaje sirve como punto de partida.</div>
+      </div>
+
+      <div class="ft-box">
+        <h3>Historial de repostajes</h3>
+        <div id="ftHistory"></div>
+      </div>
+
+      <button onclick="cambiarPantalla(1)">⬅️ Volver a principal</button>
+    </div>
+  </div>
+
+  <!-- Modal de vehículos -->
+  <div class="ft-modal" id="ftModal">
+    <div class="ft-sheet">
+      <div class="ft-sheet-head">
+        <h3>🚗 Mis vehículos</h3>
+        <button class="ft-close" onclick="ftCloseModal()">×</button>
+      </div>
+      <div id="ftVehicleList"></div>
+      <label for="ftNewVehicle" style="margin-top:14px">Nombre del vehículo</label>
+      <input id="ftNewVehicle" maxlength="40" placeholder="Ej.: Audi A4 1.8" />
+      <button class="btn-success" onclick="ftAddVehicle()">＋ Añadir vehículo</button>
     </div>
   </div>
 
@@ -453,13 +391,13 @@
     <button class="btn-tiempo" onclick="togglePanelTiempo()" title="Calculador de Tiempo">⏱️</button>
     <div class="panel-tiempo" id="panelTiempo">
       <h3>⏱️ Calculador de Tiempo</h3>
-      
+
       <label>📏 Distancia a recorrer (km):</label>
       <input type="number" id="distanciaTiempo" placeholder="Ej: 500" step="1" />
-      
+
       <label>🏃 Velocidad promedio (km/h):</label>
       <input type="number" id="velocidadPromedio" min="1" max="200" step="1" placeholder="Ej: 80" />
-      
+
       <label>☕ Tiempo de descanso:</label>
       <select id="tiempoDescanso">
         <option value="0">Sin descanso</option>
@@ -470,16 +408,16 @@
         <option value="90">1 hora 30 minutos</option>
         <option value="120">2 horas</option>
       </select>
-      
+
       <button onclick="calcularTiempoViaje()" class="btn-calcular-tiempo">🚀 Calcular Tiempo</button>
       <button onclick="resetTiempoViaje()" class="btn-danger" style="width: 100%; padding: 12px; text-transform: none; font-size: 14px; margin-bottom: 10px;">🗑️ Borrar y recalcular</button>
-      
+
       <div class="resultado-tiempo" id="resultadoTiempo" style="display: none;"></div>
     </div>
   </div>
 
   <script>
-    // Variables globales
+    // ================== CALCULADORA PRINCIPAL ==================
     let datosCalculos = {
       ultimoIngreso: 0,
       ultimoGastoCombustible: 0,
@@ -488,25 +426,26 @@
       ultimosGastosFijos: 0
     };
 
-    // Cargar datos al iniciar
     window.addEventListener('load', () => {
       cargarGastosFijos();
       mostrarHistorial();
       mostrarEstadisticas();
     });
 
-    // Funciones de navegación
     function cambiarPantalla(numero) {
       document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('visible'));
       document.getElementById(`pantalla${numero}`).classList.add('visible');
-      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
       if (numero === 3) {
         mostrarHistorial();
         mostrarEstadisticas();
       }
+      if (numero === 4) {
+        ftRender();
+      }
     }
 
-    // Funciones de gastos fijos
     function cargarGastosFijos() {
       const campos = ["seguroCamion", "seguroMercancia", "itv", "frecuenciaItv", "peajes", "cuotaEmpresarial", "frecuenciaCuota"];
       campos.forEach(campo => {
@@ -519,11 +458,9 @@
     }
 
     function guardarGastoFijo(id) {
-      const valor = document.getElementById(id).value;
-      localStorage.setItem(id, valor);
+      localStorage.setItem(id, document.getElementById(id).value);
     }
 
-    // Cálculos principales
     function calcularTodo() {
       const precioLitro = parseFloat(document.getElementById("precioLitro").value) || 0;
       const consumo = parseFloat(document.getElementById("consumo100km").value) || 0;
@@ -536,18 +473,15 @@
       const litrosTotales = (consumo / 100) * distancia;
       const gastoCombustible = litrosTotales * precioLitro;
       const ingreso = modo === "viaje" ? pago : pago * distancia;
-      
-      // Calcular ganancia restando peajes y otros gastos
+
       const totalGastos = gastoCombustible + peajesViaje + otrosGastos;
       const ganancia = ingreso - totalGastos;
 
-      // Guardar datos para uso posterior
       datosCalculos.ultimoIngreso = ingreso;
       datosCalculos.ultimoGastoCombustible = gastoCombustible;
       datosCalculos.ultimosPeajes = peajesViaje;
       datosCalculos.ultimosOtrosGastos = otrosGastos;
 
-      // Construir el resultado con líneas opcionales
       let resultadoHTML = `
         <strong>📊 Resumen del Viaje</strong><br><br>
         🌍 <strong>Distancia:</strong> ${distancia.toLocaleString()} km<br>
@@ -555,12 +489,9 @@
         💸 <strong>Gasto gasoil:</strong> €${gastoCombustible.toFixed(2)}<br>
       `;
 
-      // Solo mostrar peajes si hay valor
       if (peajesViaje > 0) {
         resultadoHTML += `🚦 <strong>Peajes:</strong> €${peajesViaje.toFixed(2)}<br>`;
       }
-
-      // Solo mostrar otros gastos si hay valor
       if (otrosGastos > 0) {
         resultadoHTML += `🍸 <strong>Otros gastos:</strong> €${otrosGastos.toFixed(2)}<br>`;
       }
@@ -572,7 +503,6 @@
         </div>
       `;
 
-      // Mostrar euro/km solo si es pago por viaje y hay distancia
       if (modo === "viaje" && distancia > 0) {
         const euroKm = pago / distancia;
         resultadoHTML += `<div style="margin-top: 10px;"><strong>🚛🛣️</strong> €${euroKm.toFixed(2)}/km</div>`;
@@ -582,19 +512,10 @@
       resultado.innerHTML = resultadoHTML;
       resultado.className = ganancia >= 0 ? 'resultado positivo' : 'resultado negativo';
 
-      // Guardar en historial
       guardarEnHistorial({
         fecha: new Date().toLocaleString('es-ES'),
-        distancia,
-        precioLitro,
-        consumo,
-        modo,
-        pago,
-        ingreso,
-        gastoCombustible,
-        peajesViaje,
-        otrosGastos,
-        ganancia,
+        distancia, precioLitro, consumo, modo, pago, ingreso,
+        gastoCombustible, peajesViaje, otrosGastos, ganancia,
         tipo: 'viaje'
       });
     }
@@ -608,7 +529,6 @@
       const cuota = parseFloat(document.getElementById("cuotaEmpresarial").value) || 0;
       const frecuenciaCuota = parseInt(document.getElementById("frecuenciaCuota").value) || 30;
 
-      // Convertir todo a mensual
       const itvMensual = itv / frecuenciaItv;
       const cuotaMensual = (cuota * 30) / frecuenciaCuota;
       const gastosFijosMensuales = seguroCamion + seguroMercancia + itvMensual + peajes + cuotaMensual;
@@ -629,27 +549,25 @@
 
     function calcularTodoConFijos() {
       if (datosCalculos.ultimoIngreso === 0) {
-        document.getElementById("resultadoTotal").innerHTML = 
+        document.getElementById("resultadoTotal").innerHTML =
           '<span style="color: red;">⚠️ Primero debes calcular un viaje en la pantalla principal.</span>';
         return;
       }
 
       calcularGastosFijos();
 
-      // Estimación mensual basada en el último viaje
       const ingresoPorViaje = datosCalculos.ultimoIngreso;
       const gastoCombustiblePorViaje = datosCalculos.ultimoGastoCombustible;
       const peajesPorViaje = datosCalculos.ultimosPeajes;
       const otrosGastosPorViaje = datosCalculos.ultimosOtrosGastos;
       const gastosFijosMensuales = datosCalculos.ultimosGastosFijos;
-      
-      // Estimamos 8 viajes por mes (2 por semana)
+
       const viajesPorMes = 8;
       const ingresoMensualEstimado = ingresoPorViaje * viajesPorMes;
       const gastoCombustibleMensual = gastoCombustiblePorViaje * viajesPorMes;
       const peajesMensual = peajesPorViaje * viajesPorMes;
       const otrosGastosMensual = otrosGastosPorViaje * viajesPorMes;
-      
+
       const gananciaNeta = ingresoMensualEstimado - gastoCombustibleMensual - peajesMensual - otrosGastosMensual - gastosFijosMensuales;
       const gananciaNetaPorViaje = gananciaNeta / viajesPorMes;
 
@@ -659,14 +577,8 @@
         <strong>Ingresos estimados:</strong> €${ingresoMensualEstimado.toFixed(2)}<br>
         <strong>Gastos combustible:</strong> €${gastoCombustibleMensual.toFixed(2)}<br>
       `;
-
-      if (peajesMensual > 0) {
-        resultadoHTML += `<strong>Peajes:</strong> €${peajesMensual.toFixed(2)}<br>`;
-      }
-
-      if (otrosGastosMensual > 0) {
-        resultadoHTML += `<strong>Otros gastos:</strong> €${otrosGastosMensual.toFixed(2)}<br>`;
-      }
+      if (peajesMensual > 0) resultadoHTML += `<strong>Peajes:</strong> €${peajesMensual.toFixed(2)}<br>`;
+      if (otrosGastosMensual > 0) resultadoHTML += `<strong>Otros gastos:</strong> €${otrosGastosMensual.toFixed(2)}<br>`;
 
       resultadoHTML += `
         <strong>Gastos fijos:</strong> €${gastosFijosMensuales.toFixed(2)}<br>
@@ -679,43 +591,30 @@
       resultado.innerHTML = resultadoHTML;
       resultado.className = gananciaNeta >= 0 ? 'resultado positivo' : 'resultado negativo';
 
-      // Guardar análisis en historial
       guardarEnHistorial({
         fecha: new Date().toLocaleString('es-ES'),
         ingresoMensual: ingresoMensualEstimado,
         gastosCombustible: gastoCombustibleMensual,
-        peajesMensual,
-        otrosGastosMensual,
+        peajesMensual, otrosGastosMensual,
         gastosFijos: gastosFijosMensuales,
-        gananciaNeta,
-        gananciaNetaPorViaje,
+        gananciaNeta, gananciaNetaPorViaje,
         viajesEstimados: viajesPorMes,
         tipo: 'analisis_mensual'
       });
     }
 
-    // Funciones de historial
     function guardarEnHistorial(datos) {
       let historial = JSON.parse(localStorage.getItem('historialCalculos') || '[]');
-      historial.unshift(datos); // Agregar al inicio
-      
-      // Mantener solo los últimos 100 registros
-      if (historial.length > 100) {
-        historial = historial.slice(0, 100);
-      }
-      
+      historial.unshift(datos);
+      if (historial.length > 100) historial = historial.slice(0, 100);
       localStorage.setItem('historialCalculos', JSON.stringify(historial));
     }
 
     function mostrarHistorial(filtro = null) {
       let historial = JSON.parse(localStorage.getItem('historialCalculos') || '[]');
-      
-      if (filtro) {
-        historial = historial.filter(item => item.fecha.includes(filtro));
-      }
+      if (filtro) historial = historial.filter(item => item.fecha.includes(filtro));
 
       const lista = document.getElementById('historialLista');
-      
       if (historial.length === 0) {
         lista.innerHTML = '<div class="historial-item">📭 No hay cálculos guardados</div>';
         return;
@@ -728,16 +627,14 @@
               <strong>🚛 Viaje #${historial.length - index}</strong><br>
               <small>${item.fecha}</small><br>
               Distancia: ${item.distancia} km | Ganancia: €${item.ganancia.toFixed(2)}
-            </div>
-          `;
+            </div>`;
         } else if (item.tipo === 'analisis_mensual') {
           return `
             <div class="historial-item">
               <strong>📊 Análisis Mensual</strong><br>
               <small>${item.fecha}</small><br>
               Ganancia neta mensual: €${item.gananciaNeta.toFixed(2)}
-            </div>
-          `;
+            </div>`;
         }
         return '';
       }).join('');
@@ -746,40 +643,27 @@
     function mostrarEstadisticas() {
       const historial = JSON.parse(localStorage.getItem('historialCalculos') || '[]');
       const viajes = historial.filter(item => item.tipo === 'viaje');
-      
+
       if (viajes.length === 0) {
         document.getElementById('estadisticas').innerHTML = '';
         return;
       }
 
       const totalViajes = viajes.length;
-      const totalIngresos = viajes.reduce((sum, viaje) => sum + viaje.ingreso, 0);
-      const totalGastos = viajes.reduce((sum, viaje) => sum + viaje.gastoCombustible + (viaje.peajesViaje || 0) + (viaje.otrosGastos || 0), 0);
-      const promedioGanancia = viajes.reduce((sum, viaje) => sum + viaje.ganancia, 0) / totalViajes;
+      const totalIngresos = viajes.reduce((s, v) => s + v.ingreso, 0);
+      const totalGastos = viajes.reduce((s, v) => s + v.gastoCombustible + (v.peajesViaje || 0) + (v.otrosGastos || 0), 0);
+      const promedioGanancia = viajes.reduce((s, v) => s + v.ganancia, 0) / totalViajes;
 
       document.getElementById('estadisticas').innerHTML = `
-        <div class="stat-card">
-          <div class="stat-value">${totalViajes}</div>
-          <div>Viajes registrados</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">€${totalIngresos.toFixed(0)}</div>
-          <div>Ingresos totales</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">€${totalGastos.toFixed(0)}</div>
-          <div>Gastos totales</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">€${promedioGanancia.toFixed(0)}</div>
-          <div>Ganancia promedio</div>
-        </div>
+        <div class="stat-card"><div class="stat-value">${totalViajes}</div><div>Viajes registrados</div></div>
+        <div class="stat-card"><div class="stat-value">€${totalIngresos.toFixed(0)}</div><div>Ingresos totales</div></div>
+        <div class="stat-card"><div class="stat-value">€${totalGastos.toFixed(0)}</div><div>Gastos totales</div></div>
+        <div class="stat-card"><div class="stat-value">€${promedioGanancia.toFixed(0)}</div><div>Ganancia promedio</div></div>
       `;
     }
 
     function filtrarHistorial() {
-      const filtro = document.getElementById('filtroFecha').value;
-      mostrarHistorial(filtro);
+      mostrarHistorial(document.getElementById('filtroFecha').value);
     }
 
     function limpiarHistorial() {
@@ -793,50 +677,40 @@
 
     function exportarHistorial() {
       const historial = JSON.parse(localStorage.getItem('historialCalculos') || '[]');
-      
       if (historial.length === 0) {
         alert('⚠️ No hay datos para exportar');
         return;
       }
-
-      const dataStr = JSON.stringify(historial, null, 2);
-      const dataBlob = new Blob([dataStr], {type: 'application/json'});
-      
+      const dataBlob = new Blob([JSON.stringify(historial, null, 2)], { type: 'application/json' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(dataBlob);
       link.download = `historial_calculadora_${new Date().toISOString().split('T')[0]}.json`;
       link.click();
-      
       alert('✅ Historial exportado correctamente');
     }
 
-    // Funciones del calculador de tiempo
+    // ================== CALCULADOR DE TIEMPO ==================
     function togglePanelTiempo() {
-      const panel = document.getElementById('panelTiempo');
-      panel.classList.toggle('visible');
+      document.getElementById('panelTiempo').classList.toggle('visible');
     }
 
     function calcularTiempoViaje() {
       const distancia = parseFloat(document.getElementById('distanciaTiempo').value) || 0;
       const velocidad = parseFloat(document.getElementById('velocidadPromedio').value) || 0;
       const descansoMinutos = parseFloat(document.getElementById('tiempoDescanso').value) || 0;
-      
+
       if (distancia <= 0 || velocidad <= 0) {
         alert('⚠️ Por favor, ingresa una distancia y velocidad válidas');
         return;
       }
 
-      // Calcular tiempo de viaje en horas
       const tiempoViajeHoras = distancia / velocidad;
-      
-      // Convertir a horas, minutos y segundos
-      let tiempoTotalMinutos = (tiempoViajeHoras * 60) + descansoMinutos;
-      
+      const tiempoTotalMinutos = (tiempoViajeHoras * 60) + descansoMinutos;
+
       const horas = Math.floor(tiempoTotalMinutos / 60);
       const minutos = Math.floor(tiempoTotalMinutos % 60);
       const segundos = Math.floor(((tiempoTotalMinutos % 1) * 60));
 
-      // Calcular tiempo sin descanso para comparación
       const horasSinDescanso = Math.floor(tiempoViajeHoras);
       const minutosSinDescanso = Math.floor((tiempoViajeHoras % 1) * 60);
       const segundosSinDescanso = Math.floor(((tiempoViajeHoras % 1) * 60 % 1) * 60);
@@ -857,7 +731,6 @@
           <span style="font-size: 1.2em;">${horas}h ${minutos}m ${segundos}s</span>
         </div>
       `;
-      
       resultado.style.display = 'block';
     }
 
@@ -870,16 +743,208 @@
       resultado.style.display = 'none';
     }
 
-    // Cerrar panel al hacer click fuera
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', function (event) {
       const panel = document.getElementById('panelTiempo');
       const boton = document.querySelector('.btn-tiempo');
-      
       if (!panel.contains(event.target) && !boton.contains(event.target)) {
         panel.classList.remove('visible');
       }
     });
+
+    // ================== CONTROL DE COMBUSTIBLE (FuelTrack) ==================
+    const FT_KEY = "fueltrack_v3"; // misma clave que la app original: conserva tus datos
+    let ftState;
+    try {
+      ftState = JSON.parse(localStorage.getItem(FT_KEY) || '{"vehicles":[],"selectedId":null,"records":[]}');
+      if (!ftState.vehicles) ftState.vehicles = [];
+      if (!ftState.records) ftState.records = [];
+    } catch (e) {
+      ftState = { vehicles: [], selectedId: null, records: [] };
+    }
+
+    const $ = id => document.getElementById(id);
+    const ftUid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+    const ftMoney = n => Number(n || 0).toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+    const ftNum = n => Number(n || 0).toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    function ftToday() {
+      const d = new Date();
+      return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    }
+    function ftEsc(s) {
+      return String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+    }
+    function ftFormatDate(s) { return new Date(s + "T12:00:00").toLocaleDateString("es-ES"); }
+    function ftSave() { localStorage.setItem(FT_KEY, JSON.stringify(ftState)); }
+    function ftCurrentVehicle() { return ftState.vehicles.find(v => v.id === ftState.selectedId); }
+    function ftEnsureVehicle() {
+      if (!ftState.vehicles.length) {
+        const v = { id: ftUid(), name: "Mi vehículo" };
+        ftState.vehicles.push(v);
+        ftState.selectedId = v.id;
+        ftSave();
+      } else if (!ftCurrentVehicle()) {
+        ftState.selectedId = ftState.vehicles[0].id;
+        ftSave();
+      }
+    }
+    ftEnsureVehicle();
+    $("ftDate").value = ftToday();
+
+    // Vehículos
+    function ftOpenModal() { ftRenderVehicles(); $("ftModal").classList.add("show"); }
+    function ftCloseModal() { $("ftModal").classList.remove("show"); }
+    $("ftModal").addEventListener("click", e => { if (e.target === $("ftModal")) ftCloseModal(); });
+
+    function ftRenderVehicles() {
+      $("ftVehicleList").innerHTML = ftState.vehicles.map(v => `
+        <div class="ft-vrow ${v.id === ftState.selectedId ? 'sel' : ''}">
+          <div><b>${ftEsc(v.name)}</b>${v.id === ftState.selectedId ? '<small style="display:block;color:#ffd93d">Seleccionado</small>' : ''}</div>
+          <div class="acts">
+            <button onclick="ftSelectVehicle('${v.id}')">Elegir</button>
+            <button class="btn-danger" onclick="ftDeleteVehicle('${v.id}')">Borrar</button>
+          </div>
+        </div>`).join("");
+    }
+    function ftSelectVehicle(id) {
+      ftState.selectedId = id; ftSave(); ftRender(); ftRenderVehicles();
+    }
+    function ftDeleteVehicle(id) {
+      const v = ftState.vehicles.find(x => x.id === id);
+      if (!v) return;
+      if (!confirm("¿Borrar " + v.name + " y todos sus repostajes?")) return;
+      ftState.vehicles = ftState.vehicles.filter(x => x.id !== id);
+      ftState.records = ftState.records.filter(r => r.vehicleId !== id);
+      if (ftState.selectedId === id) ftState.selectedId = ftState.vehicles[0]?.id || null;
+      ftEnsureVehicle(); ftSave(); ftRender(); ftRenderVehicles();
+    }
+    function ftAddVehicle() {
+      const name = $("ftNewVehicle").value.trim();
+      if (!name) return;
+      const v = { id: ftUid(), name };
+      ftState.vehicles.push(v);
+      ftState.selectedId = v.id;
+      $("ftNewVehicle").value = "";
+      ftSave(); ftRender(); ftRenderVehicles();
+    }
+
+    // Repostajes
+    function ftCalcTotal() {
+      const l = parseFloat($("ftLiters").value), p = parseFloat($("ftPrice").value);
+      if (isFinite(l) && isFinite(p)) $("ftTotal").value = (l * p).toFixed(2);
+    }
+    $("ftLiters").addEventListener("input", ftCalcTotal);
+    $("ftPrice").addEventListener("input", ftCalcTotal);
+
+    function ftAddRecord() {
+      ftEnsureVehicle();
+      const km = parseFloat($("ftKm").value), liters = parseFloat($("ftLiters").value);
+      const price = parseFloat($("ftPrice").value);
+      let total = parseFloat($("ftTotal").value);
+      if (!isFinite(km) || !isFinite(liters) || liters <= 0) { alert("Introduce los kilómetros y los litros."); return; }
+      if (!isFinite(total) && isFinite(price)) total = liters * price;
+      if (!isFinite(total)) total = 0;
+      ftState.records.push({
+        id: ftUid(), vehicleId: ftState.selectedId, date: $("ftDate").value || ftToday(),
+        km, liters, total, fuel: $("ftFuel").value, note: $("ftNote").value.trim()
+      });
+      ftSave();
+      ["ftKm", "ftLiters", "ftPrice", "ftTotal", "ftNote"].forEach(id => $(id).value = "");
+      ftRender();
+    }
+    function ftDeleteRecord(id) {
+      if (!confirm("¿Borrar este repostaje?")) return;
+      ftState.records = ftState.records.filter(r => r.id !== id);
+      ftSave(); ftRender();
+    }
+
+    // Cálculos
+    let ftPeriod = "day";
+    $("ftPeriodTabs").addEventListener("click", e => {
+      const b = e.target.closest(".ft-tab");
+      if (!b) return;
+      ftPeriod = b.dataset.period;
+      document.querySelectorAll(".ft-tab").forEach(x => x.classList.toggle("active", x === b));
+      ftRenderPeriod();
+    });
+
+    function ftRecords() {
+      return ftState.records.filter(r => r.vehicleId === ftState.selectedId)
+        .sort((a, b) => a.date.localeCompare(b.date) || a.km - b.km);
+    }
+    function ftDistance(list) {
+      let d = 0;
+      for (let i = 1; i < list.length; i++) {
+        const x = list[i].km - list[i - 1].km;
+        if (x >= 0) d += x;
+      }
+      return d;
+    }
+    // Consumo método depósito a depósito: los litros del primer registro no cuentan
+    function ftConsumption(list) {
+      const d = ftDistance(list);
+      const l = list.slice(1).reduce((a, r) => a + r.liters, 0);
+      return d > 0 ? (l / d * 100) : null;
+    }
+    function ftPeriodStart() {
+      if (ftPeriod === "all") return null;
+      const now = new Date(), s = new Date(now);
+      s.setHours(0, 0, 0, 0);
+      if (ftPeriod === "week") s.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+      if (ftPeriod === "month") s.setDate(1);
+      if (ftPeriod === "year") s.setMonth(0, 1);
+      return s;
+    }
+    function ftPeriodData() {
+      const all = ftRecords(), start = ftPeriodStart();
+      if (!start) return { inPeriod: all, list: all };
+      const inPeriod = all.filter(r => new Date(r.date + "T00:00:00") >= start);
+      const idx = inPeriod.length ? all.indexOf(inPeriod[0]) : -1;
+      const baseline = idx > 0 ? all[idx - 1] : null; // repostaje previo como punto de partida
+      return { inPeriod, list: baseline ? [baseline, ...inPeriod] : inPeriod };
+    }
+
+    function ftRender() {
+      const v = ftCurrentVehicle();
+      $("ftSelectedVehicle").textContent = v ? v.name : "Sin vehículo";
+      const rs = ftRecords();
+      const money = rs.reduce((a, r) => a + r.total, 0);
+      const dist = ftDistance(rs);
+      $("ftSMoney").textContent = ftMoney(money);
+      $("ftSLiters").textContent = ftNum(rs.reduce((a, r) => a + r.liters, 0)) + " L";
+      $("ftSKm").textContent = ftNum(dist) + " km";
+      const c = ftConsumption(rs);
+      $("ftSAvg").textContent = c ? ftNum(c) + " L/100" : "-- L/100";
+      const moneyTrip = rs.slice(1).reduce((a, r) => a + r.total, 0);
+      $("ftSCostKm").textContent = dist > 0 && moneyTrip > 0 ? ftNum(moneyTrip / dist) + " €/km" : "-- €/km";
+      ftRenderPeriod();
+      ftRenderHistory(rs);
+    }
+    function ftRenderPeriod() {
+      const { inPeriod, list } = ftPeriodData();
+      $("ftPLiters").textContent = ftNum(inPeriod.reduce((a, r) => a + r.liters, 0)) + " L";
+      $("ftPKm").textContent = ftNum(ftDistance(list)) + " km";
+      const c = ftConsumption(list);
+      $("ftPAvg").textContent = c ? ftNum(c) + " L/100" : "-- L/100";
+      $("ftPMoney").textContent = ftMoney(inPeriod.reduce((a, r) => a + r.total, 0));
+    }
+    function ftRenderHistory(rs) {
+      const box = $("ftHistory");
+      if (!rs.length) { box.innerHTML = '<div class="ft-empty">Todavía no hay repostajes para este vehículo.</div>'; return; }
+      box.innerHTML = rs.slice().reverse().map(r => `
+        <div class="ft-record">
+          <div>
+            <b>${ftEsc(r.fuel)} · ${ftNum(r.liters)} L</b>
+            <small>${ftFormatDate(r.date)} · ${ftNum(r.km)} km${r.note ? " · " + ftEsc(r.note) : ""}</small>
+          </div>
+          <div class="ft-money">
+            ${ftMoney(r.total)}
+            <small style="font-weight:normal;color:#fff">${r.liters ? ftNum(r.total / r.liters) + " €/L" : ""}</small>
+            <button class="ft-del" onclick="ftDeleteRecord('${r.id}')">Borrar</button>
+          </div>
+        </div>`).join("");
+    }
+
+    ftRender();
   </script>
 </body>
 </html>
-
